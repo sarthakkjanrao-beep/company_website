@@ -1,76 +1,15 @@
-import { personal } from '../data/personal';
+import { companyData } from '../data/company';
 import { retrieveContext, retrieveContextSync, isOffTopic } from '../rag/retriever';
 
-// ─── Static structured JSON payloads ─────────────────────────────────────────
-const SKILLS_JSON = JSON.stringify({
+// ─── Static structured JSON payloads for Sapraforce ──────────────────────────────
+const SERVICES_JSON = JSON.stringify({
     __structured__: true,
     type: 'skills',
     data: {
         categories: [
-            { name: 'Programming Languages', icon: '', items: ['C++', 'Java', 'JavaScript', 'TypeScript', 'Python', 'SQL'] },
-            { name: 'Frontend', icon: '', items: ['React.js', 'Next.js', 'HTML5', 'CSS3', 'Tailwind CSS'] },
-            { name: 'Backend', icon: '', items: ['Node.js', 'Express.js', 'REST APIs'] },
-            { name: 'Databases', icon: '', items: ['MongoDB', 'PostgreSQL', 'Supabase'] },
-            { name: 'AI & Automation', icon: '', items: ['RAG', 'LLM Integration', 'LangChain', 'n8n', 'OCR', 'FAISS'] },
-            { name: 'Tools & Platforms', icon: '', items: ['Git', 'GitHub', 'VS Code', 'Vercel', 'Render', 'Postman', 'Cloudinary'] },
-        ],
-    },
-});
-
-const PROJECTS_JSON = JSON.stringify({
-    __structured__: true,
-    type: 'projects',
-    data: {
-        projects: [
-            { title: 'Online Learning System', description: 'Full-stack LMS with role-based access for students and instructors.', tech: ['React', 'Node.js', 'Express.js', 'MongoDB', 'JWT', 'Razorpay'], github: 'https://github.com/Sarthakjanrao07/Online-learning-Platform.git', live: 'https://virtual-course-gray.vercel.app' },
-            { title: 'AgriMitra', description: 'AI agriculture assistant with 3D GIS crop monitoring, disease prediction, weather integration.', tech: ['React', 'Flask', 'PostgreSQL', '3D GIS', 'Gemini 2.0 Flash API', 'OCR'], github: 'https://github.com/Sarthakjanrao07/AgriMitra07.git', live: 'https://youtu.be/bDyHGnQ92kk?si=84IoFbqYtO_1v6AV' },
-            { title: 'Research Paper Summariser', description: 'AI agent that reads, summarizes, and cross-references academic papers via RAG pipeline.', tech: ['Python', 'LangChain', 'OpenAI', 'Pinecone', 'Streamlit'], github: 'https://ijcope.org/article/a-hybrid-transformer-architecture-for-academic-summarization-with-tabular-and-narrative-outputs', live: null },
-            { title: 'E-Commerce Shopping Website', description: 'Full-stack MERN e-commerce platform with auth, product management, and shopping cart.', tech: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'JWT', 'Tailwind CSS'], github: 'https://github.com/Sarthakjanrao07/Ecommerce-Fullstack-Shopping-Website.git', live: 'https://ecommerce-fullstack-shopping-website-1.onrender.com/' },
-            { title: 'Real-Time Mentorship System', description: 'MERN app with Socket.io for real-time one-to-one mentor-mentee communication.', tech: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Socket.io', 'JWT'], github: 'https://github.com/Sarthakjanrao07/Real_time_mentoship_system.git', live: null },
-        ],
-    },
-});
-
-const EXPERIENCE_JSON = JSON.stringify({
-    __structured__: true,
-    type: 'experience',
-    data: {
-        jobs: [
-            {
-                role: 'Software Developer Trainee', company: 'Thinkitive Technologies',
-                duration: 'July 2026 – Present', type: 'Trainee',
-                summary: 'Worked on frontend web development and client ticket resolution using Meteor.js and React.js, building responsive UI components and resolving client issues.',
-                highlights: [
-                    'Developed and maintained responsive frontend web interfaces using Meteor.js, React.js, HTML, and CSS',
-                    'Resolved 30+ client support tickets and software bugs, ensuring smooth application performance',
-                    'Collaborated with development teams to implement client-requested feature enhancements',
-                ],
-                tech: ['Meteor.js', 'React.js', 'JavaScript', 'HTML5', 'CSS3', 'REST APIs', 'Git', 'Bug Resolution'],
-            },
-            {
-                role: 'Software Engineering Intern', company: 'Vara Tech',
-                duration: 'Nov 2025 – May 2026', type: 'Internship',
-                summary: 'Built a full-stack SaaS app with n8n automation, processing 50,000+ CRM records and reducing manual effort by 70%.',
-                highlights: [
-                    'Built full-stack SaaS using Lovable, Supabase, and n8n',
-                    'Integrated 10+ third-party APIs (CRM, email, workflow)',
-                    'Automated 20+ business workflows, cutting manual effort by 70%',
-                    'Processed 50,000+ records through scalable data pipelines',
-                ],
-                tech: ['React', 'TypeScript', 'Supabase', 'PostgreSQL', 'n8n', 'REST APIs'],
-            },
-            {
-                role: 'Frontend Developer Intern', company: 'Hanumatrix',
-                duration: 'July 2025 – Dec 2025', type: 'Internship',
-                summary: 'Developed responsive React/Next.js web apps, improving frontend performance by 30%.',
-                highlights: [
-                    'Built 10+ reusable components with React.js, Next.js, Tailwind CSS',
-                    'Integrated 10+ REST API endpoints for dynamic data rendering',
-                    'Reduced page load time by 30% via optimization and lazy loading',
-                    'Resolved 40+ bugs in an Agile environment',
-                    ],
-                tech: ['React.js', 'Next.js', 'JavaScript', 'TypeScript', 'Tailwind CSS', 'REST APIs'],
-            },
+            { name: 'AI & Automation', icon: '', items: ['Autonomous AI Agents', 'Workflow Automation', 'Enterprise RAG Systems', 'API Connectors'] },
+            { name: 'Custom Software', icon: '', items: ['SaaS Web Applications', 'Analytics Dashboards', 'ERP/CRM Integration', 'Custom APIs'] },
+            { name: 'Technologies', icon: '', items: ['React.js', 'TypeScript', 'Node.js', 'Python', 'PostgreSQL', 'Supabase'] },
         ],
     },
 });
@@ -79,34 +18,30 @@ const CONTACT_JSON = JSON.stringify({
     __structured__: true,
     type: 'contact',
     data: {
-        phone: '+91 93220 46379',
-        email: 'sarthakjanrav@gmail.com',
-        location: 'Pune, Maharashtra, India',
+        phone: companyData.contactInfo.phone,
+        email: companyData.contactInfo.email,
+        location: companyData.contactInfo.location,
     },
 });
 
-const WORK_PROOFS_JSON = JSON.stringify({
+const PROOFS_JSON = JSON.stringify({
     __structured__: true,
     type: 'proofs',
     data: {
-        linkedin: 'https://www.linkedin.com/in/sarthak-janrao/',
-        github: 'https://github.com/Sarthakjanrao07',
-        codolio: 'https://codolio.com/profile/SarthakJanrao',
+        linkedin: 'http://www.linkedin.com/in/sapraforce-technologies-a64359428',
+        github: '',
+        codolio: '',
     },
 });
 
-
-
 // ─── Intent detection ─────────────────────────────────────────────────────────
-type Intent = 'skills' | 'projects' | 'experience' | 'contact' | 'proofs' | 'general';
+type Intent = 'skills' | 'contact' | 'proofs' | 'general';
 
 function detectIntent(msg: string): Intent {
     const m = msg.toLowerCase();
-    if (/\b(skill|tech stack|technolog|programming language|framework|tools? you use)\b/.test(m)) return 'skills';
-    if (/\b(top project|your project|what (have|did) you build|show.*project|portfolio project)\b/.test(m)) return 'projects';
-    if (/\b(work experience|internship|where (have|did) you work|your job|your role|company)\b/.test(m)) return 'experience';
-    if (/\b(proof of work|social profile|linkedin|codolio|github.*profile|links)\b/.test(m)) return 'proofs';
-    if (/\b(contact|reach you|phone number|email address)\b/.test(m)) return 'contact';
+    if (/\b(service|solution|ai agent|automation|custom software|tech stack)\b/.test(m)) return 'skills';
+    if (/\b(proof|social|linkedin|twitter|x|links)\b/.test(m)) return 'proofs';
+    if (/\b(contact|reach|phone|email|location|pune|whatsapp)\b/.test(m)) return 'contact';
     return 'general';
 }
 
@@ -118,107 +53,60 @@ function getCacheKey(msg: string): string {
 }
 
 // Pre-seed chip button queries
-responseCache.set('what are your technical skills?', SKILLS_JSON);
-responseCache.set('tell me about your top projects.', PROJECTS_JSON);
-responseCache.set('what is your work experience?', EXPERIENCE_JSON);
-responseCache.set('what are your contact details?', CONTACT_JSON);
-responseCache.set('show your proof of work', WORK_PROOFS_JSON);
+responseCache.set("services & solutions", SERVICES_JSON);
+responseCache.set("contact details", CONTACT_JSON);
+responseCache.set("social links", PROOFS_JSON);
 
-// ─── System prompt ────────────────────────────────────────────────────────────
-const SYSTEM_HEADER = `You are the portfolio AI assistant for ${personal.name} (${personal.title}).
-STRICT RULES:
-1. Answer ONLY using the CONTEXT provided below. Do NOT use any knowledge from outside the context.
-2. If the answer is not in the context, say: "I don't have that information in Sarthak's portfolio."
-3. Never answer general programming, science, math, or unrelated questions.
-4. Be concise — 1 to 3 sentences maximum.
-5. Do not make up facts or hallucinate locations. If asked where he is "originally from", and it is not in the text, DO NOT guess.
-6. If asked about contact/phone/email/mobile, use ONLY what is explicitly in the context.`;
+// ─── Main Chat Generator ──────────────────────────────────────────────────────
+export async function generateChatResponse(userMessage: string): Promise<string> {
+    const trimmed = userMessage.trim();
+    if (!trimmed) return "Hello! How can Sapraforce assist your business today?";
 
-// ─── Main export ──────────────────────────────────────────────────────────────
-export const generateChatResponse = async (
-    message: string,
-    history: { role: string; parts: { text: string }[] }[]
-): Promise<string> => {
-
-    const cacheKey = getCacheKey(message);
-
-    // 1. Cache hit
-    if (responseCache.has(cacheKey)) return responseCache.get(cacheKey)!;
-
-    const intent = detectIntent(message);
-
-    // 2. Structured intents — return instantly, zero API call
-    if (intent === 'skills') { responseCache.set(cacheKey, SKILLS_JSON); return SKILLS_JSON; }
-    if (intent === 'projects') { responseCache.set(cacheKey, PROJECTS_JSON); return PROJECTS_JSON; }
-    if (intent === 'experience') { responseCache.set(cacheKey, EXPERIENCE_JSON); return EXPERIENCE_JSON; }
-    if (intent === 'contact') { responseCache.set(cacheKey, CONTACT_JSON); return CONTACT_JSON; }
-    if (intent === 'proofs') { responseCache.set(cacheKey, WORK_PROOFS_JSON); return WORK_PROOFS_JSON; }
-
-    // 3. Off-topic guard — quick keyword check
-    if (isOffTopic(message)) {
-        const reply = "I can only answer questions about Sarthak Janrao. Please ask something related!";
-        responseCache.set(cacheKey, reply);
-        return reply;
+    const cacheKey = getCacheKey(trimmed);
+    if (responseCache.has(cacheKey)) {
+        return responseCache.get(cacheKey)!;
     }
 
-
-    // 4. Semantic RAG retrieval (async — uses vector index)
-    const context = await retrieveContext(message, 5);
-
-    // Fallback to sync if async returned empty
-    const finalContext = context || retrieveContextSync(message, 3);
-
-    if (!finalContext) {
-        const reply = "I don't have that specific information in Sarthak's portfolio.";
-        responseCache.set(cacheKey, reply);
-        return reply;
+    if (isOffTopic(trimmed)) {
+        return "I can only answer questions about Sapraforce's AI services, business automation solutions, and contact details. How can I help with your project?";
     }
 
-    const groqKey = import.meta.env.VITE_GROK_API_KEY;
-    if (!groqKey) return 'Please define VITE_GROK_API_KEY in your .env file.';
+    const intent = detectIntent(trimmed);
+    if (intent === 'skills') return SERVICES_JSON;
+    if (intent === 'contact') return CONTACT_JSON;
+    if (intent === 'proofs') return PROOFS_JSON;
 
-    // Trim history to last 6 messages (3 exchanges)
-    const trimmedHistory = history.slice(-6).map(item => ({
-        role: item.role === 'model' ? 'assistant' : 'user',
-        content: item.parts[0]?.text || '',
-    }));
-
-    const systemContent = `${SYSTEM_HEADER}\n\nCONTEXT:\n${finalContext}`;
+    // Direct Gemini API call if key is present
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+    if (!apiKey) {
+        const context = retrieveContextSync(trimmed);
+        return `Sapraforce is a modern AI Engineering & Automation company in Pune, India.\n\nWe build custom AI agents, automated workflow pipelines, and web applications for businesses.\n\nContact us at sapraforce@gmail.com or call +91 9322046379, +91 7350195791.\n\n${context}`;
+    }
 
     try {
-        const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        const context = await retrieveContext(trimmed);
+        const systemInstruction = `You are the AI Assistant for Sapraforce. Answer questions based on the following company context:\n${context}`;
+
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${groqKey}`,
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                model: 'llama-3.1-8b-instant',
-                stream: false,
-                temperature: 0.1,
-                max_tokens: 250,
-                messages: [
-                    { role: 'system', content: systemContent },
-                    ...trimmedHistory,
-                    { role: 'user', content: message },
-                ],
-            }),
+                contents: [
+                    { role: 'user', parts: [{ text: systemInstruction }] },
+                    { role: 'user', parts: [{ text: userMessage }] }
+                ]
+            })
         });
 
-        if (res.ok) {
-            const data = await res.json();
-            const result = data.choices?.[0]?.message?.content || 'No response content.';
-            responseCache.set(cacheKey, result);
-            return result;
+        const data = await res.json();
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (text) {
+            responseCache.set(cacheKey, text);
+            return text;
         }
-
-        const errText = await res.text();
-        if (errText.includes('credits') || errText.includes('permission-denied') || res.status === 403) {
-            return 'sorry credits Over now. come next day';
-        }
-        return `⚠️ Groq API issue: HTTP ${res.status}`;
-
-    } catch (err: any) {
-        return `⚠️ Network error: ${err.message}`;
+    } catch (err) {
+        console.error('Gemini error:', err);
     }
-};
+
+    return "Sapraforce specializes in AI Agents, Custom Business Automation, and Web Development. Contact us at sapraforce@gmail.com or +91 9322046379!";
+}

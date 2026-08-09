@@ -26,7 +26,7 @@ export const companyData = {
     initials: 'SF',
     tagline: 'Real-World AI Solutions & Enterprise Business Automation',
     subheadline: 'We design, deploy, and scale autonomous AI agents and visual workflow automation pipelines that eliminate repetitive manual work, cut operational costs by up to 70%, and run 24/7 with enterprise-grade reliability.',
-    trustHeadline: 'Trusted by 100+ forward-thinking startups & enterprise teams',
+    trustHeadline: 'TRUSTED BY 4+ FORWARD-THINKING STARTUPS & ENTERPRISE CLIENTS',
 
     stats: [
         { label: 'Cost Reduction', value: '70%', suffix: 'Avg. Savings' },
@@ -74,16 +74,14 @@ export const companyData = {
     ],
 
     partners: [
-        { name: 'OpenAI', category: 'LLM Core', symbol: '🤖' },
-        { name: 'Anthropic', category: 'Claude 3.5', symbol: '🧠' },
-        { name: 'n8n', category: 'Workflow Automation', symbol: '⚡' },
-        { name: 'Make.com', category: 'Visual Integration', symbol: '🔌' },
-        { name: 'Salesforce', category: 'CRM Sync', symbol: '☁️' },
-        { name: 'LangChain', category: 'Agent Swarms', symbol: '🔗' },
-        { name: 'Pinecone', category: 'Vector Search', symbol: '🌲' },
-        { name: 'PostgreSQL', category: 'Data Infrastructure', symbol: '🐘' },
-        { name: 'AWS', category: 'Cloud Security', symbol: '☁️' },
-        { name: 'Zapier', category: 'App Connectivity', symbol: '💥' },
+        { name: 'AMD TELECOM', category: 'Telecom & Networks', symbol: '🔴' },
+        { name: 'RE', category: 'Real Estate Enterprise', symbol: '🟧' },
+        { name: 'MAZEN', category: 'Fleet & Logistics', symbol: '🚛' },
+        { name: 'AirTrack MDM', category: 'Mobile Device Management', symbol: '🌊' },
+        { name: 'Kachyng', category: 'Fintech Payments', symbol: '💚' },
+        { name: 'Nod', category: 'Unified Messaging', symbol: '🟢' },
+        { name: 'Viaanix V3', category: 'IoT Engineering', symbol: '⚡' },
+        { name: 'DXN Edge', category: 'Data Center Solutions', symbol: '🧊' },
     ],
 
     services: [
@@ -185,9 +183,9 @@ export const companyData = {
     ],
 
     contactInfo: {
-        email: 'contact@sapraforce.ai',
-        phone: '+1 (800) 555-AI-FORCE',
-        location: 'San Francisco, CA & Global Engineering Hub',
+        email: 'sapraforce@gmail.com',
+        phone: '+91 9322046379, +91 7350195791',
+        location: 'Pune, India',
         calendarLink: 'https://cal.com',
     }
 };

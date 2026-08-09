@@ -2,24 +2,27 @@ import { useState, useEffect } from 'react';
 import { Navbar } from './components/layout/Navbar';
 import { Hero } from './sections/Hero';
 import { Solutions } from './sections/Solutions';
-import { WorkflowShowcase } from './sections/WorkflowShowcase';
-import { ImpactROI } from './sections/ImpactROI';
+import { AIServices } from './sections/AIServices';
+import { Testimonials } from './sections/Testimonials';
+import { AboutUs } from './sections/AboutUs';
 import { CompanyContact } from './sections/CompanyContact';
 import { Footer } from './components/layout/Footer';
 import { BookingModal } from './components/ui/BookingModal';
-import { ThemeSwitcher } from './components/ui/ThemeSwitcher';
-import { ChatbotToggle } from './components/chat/ChatbotToggle';
-import { Chatbot } from './components/chat/Chatbot';
+// import { ThemeSwitcher } from './components/ui/ThemeSwitcher';
+
+// Chatbot components preserved for future use
+// import { ChatbotToggle } from './components/chat/ChatbotToggle';
+// import { Chatbot } from './components/chat/Chatbot';
 
 function App() {
   const [activeSection, setActiveSection] = useState('hero');
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  // const [isChatOpen, setIsChatOpen] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   // Track active scroll section smoothly
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['hero', 'solutions', 'services', 'workflow', 'roi', 'contact'];
+      const sections = ['hero', 'solutions', 'services', 'testimonials', 'about-us', 'contact'];
       const scrollPos = window.scrollY + 180;
 
       for (const sectionId of sections) {
@@ -50,7 +53,7 @@ function App() {
   };
 
   return (
-    <div className="relative min-h-screen text-white selection:bg-[var(--gold)] selection:text-black">
+    <div className="relative min-h-screen text-white selection:bg-[#3b82f6] selection:text-white">
       {/* Background grain texture */}
       <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-[999] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
@@ -61,10 +64,12 @@ function App() {
         onBookCall={() => setIsBookingOpen(true)}
       />
 
-      {/* Floating Theme Switcher & Chatbot */}
-      <ThemeSwitcher />
-      <ChatbotToggle isOpen={isChatOpen} onClick={() => setIsChatOpen(!isChatOpen)} />
-      <Chatbot isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
+      {/* Floating Theme Switcher (Files preserved) */}
+      {/* <ThemeSwitcher /> */}
+
+      {/* Chatbot currently muted (Files preserved) */}
+      {/* <ChatbotToggle isOpen={isChatOpen} onClick={() => setIsChatOpen(!isChatOpen)} /> */}
+      {/* <Chatbot isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} /> */}
 
       {/* Booking Modal */}
       <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
@@ -77,9 +82,10 @@ function App() {
         />
         <div id="services">
           <Solutions onBookCall={() => setIsBookingOpen(true)} />
+          <AIServices onBookCall={() => setIsBookingOpen(true)} />
+          <Testimonials onBookCall={() => setIsBookingOpen(true)} />
+          <AboutUs onBookCall={() => setIsBookingOpen(true)} />
         </div>
-        <WorkflowShowcase onBookCall={() => setIsBookingOpen(true)} />
-        <ImpactROI onBookCall={() => setIsBookingOpen(true)} />
         <CompanyContact onBookCall={() => setIsBookingOpen(true)} />
       </main>
 

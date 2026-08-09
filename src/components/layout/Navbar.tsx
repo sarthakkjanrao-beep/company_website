@@ -4,12 +4,11 @@ import { FiChevronDown } from 'react-icons/fi';
 import logoSvg from '../../assets/logo.svg';
 
 const navItems = [
-    { id: 'hero',      label: 'Home' },
+    { id: 'hero', label: 'Home' },
     { id: 'solutions', label: 'AI Solutions' },
-    { id: 'services',  label: 'Services' },
-    { id: 'workflow',  label: 'How It Works' },
-    { id: 'roi',       label: 'ROI & Impact' },
-    { id: 'contact',   label: 'Contact Us' },
+    { id: 'services', label: 'Services' },
+    { id: 'about-us', label: 'About Us' },
+    { id: 'contact', label: 'Contact Us' },
 ];
 
 interface NavbarProps {

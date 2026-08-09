@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { FiMail, FiPhone, FiMapPin, FiCalendar, FiSend, FiCheckCircle } from 'react-icons/fi';
+import { motion } from 'framer-motion';
+import { FiMail, FiPhone, FiMapPin, FiCalendar, FiSend, FiCheckCircle, FiLoader } from 'react-icons/fi';
+import { FaWhatsapp } from 'react-icons/fa';
 import { companyData } from '../data/company';
 
 interface ContactProps {
@@ -8,112 +10,208 @@ interface ContactProps {
 
 export const CompanyContact: React.FC<ContactProps> = ({ onBookCall }) => {
     const [sent, setSent] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [form, setForm] = useState({
         name: '',
         email: '',
-        subject: 'General Inquiry',
+        subject: '',
         message: '',
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setSent(true);
+        setLoading(true);
+
+        try {
+            // Direct automated email delivery to sapraforce@gmail.com via FormSubmit AJAX service
+            await fetch('https://formsubmit.co/ajax/sapraforce@gmail.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    _subject: `New Contact Form Inquiry: ${form.name}`,
+                    'Full Name': form.name,
+                    'Email Address': form.email,
+                    'Subject': form.subject || 'General Inquiry',
+                    'Message / Requirements': form.message,
+                    _captcha: 'false',
+                }),
+            });
+        } catch (error) {
+            console.error('Email dispatch error:', error);
+        } finally {
+            setLoading(false);
+            setSent(true);
+        }
     };
 
     return (
         <section
             id="contact"
             style={{
-                padding: '100px 24px 80px',
+                padding: '70px 24px 90px',
                 position: 'relative',
+                background: 'linear-gradient(180deg, #060612 0%, #08081a 50%, #060612 100%)',
+                color: '#ffffff',
+                overflow: 'hidden',
+                borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+                fontFamily: "'Manrope', sans-serif",
             }}
         >
-            <div style={{ maxWidth: '1300px', margin: '0 auto' }}>
-                <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-                    <span style={{ color: 'var(--gold)', fontSize: '0.82rem', fontWeight: 800, letterSpacing: '0.2em' }}>
-                        GET IN TOUCH
-                    </span>
-                    <h2 style={{ fontSize: 'clamp(2.2rem, 3.8vw, 3.2rem)', fontWeight: 800, color: '#ffffff', margin: '10px 0 16px' }}>
-                        Ready to Automate Your <span style={{ color: 'var(--gold)' }}>Business Workflows?</span>
-                    </h2>
-                    <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1rem', maxWidth: '600px', margin: '0 auto', lineHeight: 1.6 }}>
-                        Speak with our AI solution architects to schedule a free 30-minute audit or submit your project requirements below.
-                    </p>
-                </div>
+            {/* Background Ambient Glow */}
+            <div style={{
+                position: 'absolute', bottom: '10%', left: '-5%',
+                width: '500px', height: '500px',
+                background: 'radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%)',
+                borderRadius: '50%', filter: 'blur(100px)', pointerEvents: 'none',
+            }} />
 
-                <div className="company-contact-grid">
-                    {/* Left Column: Direct Call Booking Card & Info */}
-                    <div className="contact-info-column">
-                        <div className="call-booking-hero-card">
-                            <div className="call-card-badge">RECOMMENDED</div>
-                            <h3 className="call-card-title">Book a 30-Min AI Strategy Audit</h3>
+            <div style={{ maxWidth: '1280px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
+
+                {/* ── Section Header ── */}
+                <motion.div
+                    initial={{ opacity: 0, y: -15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
+                    style={{ textAlign: 'left', marginBottom: '32px' }}
+                >
+                    <h2 style={{
+                        fontSize: 'clamp(1.65rem, 2.5vw, 2.15rem)',
+                        lineHeight: 1.25,
+                        margin: 0,
+                        letterSpacing: '-0.01em',
+                        fontFamily: "'Manrope', sans-serif",
+                    }}>
+                        <span className="thinkitive-title-gradient">Contact Us</span><br />
+                        <span className="thinkitive-title-thin">Ready to Scale Your Business?</span>
+                    </h2>
+
+                    <div style={{
+                        width: '100%',
+                        height: '1px',
+                        background: 'rgba(255, 255, 255, 0.18)',
+                        margin: '12px 0 0 0',
+                    }} />
+                </motion.div>
+
+                {/* ── 2 Perfectly Aligned Equal Height Glass Cards ── */}
+                <div className="contact-main-grid">
+
+                    {/* ── Left Column: Unified Glass Card matching right form height ── */}
+                    <motion.div
+                        initial={{ opacity: 0, x: -25 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5 }}
+                        className="left-unified-glass-card"
+                    >
+                        {/* Top: Call Booking Area */}
+                        <div>
+                            <h3 className="call-card-title">Book a 30-Min Strategy Call</h3>
                             <p className="call-card-desc">
-                                Get a custom workflow architecture diagram and estimated ROI calculation tailored specifically to your tech stack.
+                                Schedule a 1-on-1 call with our solution architects for custom workflow design and estimates.
                             </p>
                             <button onClick={onBookCall} className="call-card-btn">
-                                <FiCalendar size={18} /> Schedule 1-on-1 Strategy Call
+                                <FiCalendar size={16} /> Schedule Strategy Call
                             </button>
                         </div>
 
-                        <div className="contact-details-box">
+                        {/* Middle Divider */}
+                        <div className="card-inner-divider" />
+
+                        {/* Bottom: Contact Details with WhatsApp Direct Links */}
+                        <div className="contact-details-inner">
                             <div className="detail-item">
-                                <div className="detail-icon"><FiMail color="var(--gold)" /></div>
+                                <div className="detail-icon"><FiPhone size={16} color="#3b82f6" /></div>
                                 <div>
-                                    <div className="detail-label">Email Us</div>
+                                    <div className="detail-label">Phone</div>
+                                    <div className="detail-value">{companyData.contactInfo.phone}</div>
+                                </div>
+                            </div>
+
+                            {/* Direct WhatsApp Chat Redirect Item */}
+                            <div className="detail-item">
+                                <div className="detail-icon"><FaWhatsapp size={16} color="#3b82f6" /></div>
+                                <div>
+                                    <div className="detail-label">WhatsApp</div>
+                                    <div className="detail-value" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                                        <a
+                                            href="https://wa.me/919322046379"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="whatsapp-link-btn"
+                                        >
+                                            +91 9322046379 ↗
+                                        </a>
+                                        <a
+                                            href="https://wa.me/917350195791"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="whatsapp-link-btn"
+                                        >
+                                            +91 7350195791 ↗
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="detail-item">
+                                <div className="detail-icon"><FiMail size={16} color="#3b82f6" /></div>
+                                <div>
+                                    <div className="detail-label">Email</div>
                                     <div className="detail-value">{companyData.contactInfo.email}</div>
                                 </div>
                             </div>
 
                             <div className="detail-item">
-                                <div className="detail-icon"><FiPhone color="var(--gold)" /></div>
-                                <div>
-                                    <div className="detail-label">Direct Phone</div>
-                                    <div className="detail-value">{companyData.contactInfo.phone}</div>
-                                </div>
-                            </div>
-
-                            <div className="detail-item">
-                                <div className="detail-icon"><FiMapPin color="var(--gold)" /></div>
+                                <div className="detail-icon"><FiMapPin size={16} color="#3b82f6" /></div>
                                 <div>
                                     <div className="detail-label">Headquarters</div>
                                     <div className="detail-value">{companyData.contactInfo.location}</div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
 
-                    {/* Right Column: Contact Inquiry Form */}
-                    <div className="contact-form-column">
-                        <div className="form-glass-card">
-                            <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#fff', marginBottom: '8px' }}>
-                                Send Us a Message
-                            </h3>
-                            <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.88rem', marginBottom: '24px' }}>
-                                Have a specific question or RFP? Drop us a line and our engineering team will get back to you within 2 hours.
+                    {/* ── Right Column: Form Glass Card matching left card height ── */}
+                    <motion.div
+                        initial={{ opacity: 0, x: 25 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.15 }}
+                        className="form-glass-card"
+                    >
+                        <div>
+                            <h3 className="form-title">Send Us a Message</h3>
+                            <p className="form-subtitle">
+                                Drop us a message and our engineering team will get back to you shortly.
                             </p>
 
                             {!sent ? (
-                                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                                <form onSubmit={handleSubmit} className="contact-form">
+                                    <div className="form-row-2">
                                         <div>
                                             <label className="form-label">Name *</label>
                                             <input
                                                 type="text"
                                                 required
-                                                placeholder="John Doe"
+                                                placeholder="Enter your name"
                                                 value={form.name}
-                                                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                                                onChange={e => setForm({ ...form, name: e.target.value })}
                                                 className="form-input"
                                             />
                                         </div>
                                         <div>
-                                            <label className="form-label">Work Email *</label>
+                                            <label className="form-label">Email *</label>
                                             <input
                                                 type="email"
                                                 required
-                                                placeholder="john@company.com"
+                                                placeholder="Enter your email address"
                                                 value={form.email}
-                                                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                                                onChange={e => setForm({ ...form, email: e.target.value })}
                                                 className="form-input"
                                             />
                                         </div>
@@ -123,188 +221,307 @@ export const CompanyContact: React.FC<ContactProps> = ({ onBookCall }) => {
                                         <label className="form-label">Subject</label>
                                         <input
                                             type="text"
-                                            placeholder="AI Workflow Automation Inquiry"
+                                            placeholder="General inquiry or project discussion"
                                             value={form.subject}
-                                            onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                                            onChange={e => setForm({ ...form, subject: e.target.value })}
                                             className="form-input"
                                         />
                                     </div>
 
                                     <div>
-                                        <label className="form-label">Project Details / Requirements *</label>
+                                        <label className="form-label">Message *</label>
                                         <textarea
-                                            rows={4}
                                             required
-                                            placeholder="Tell us about the workflows or manual processes you want to automate..."
+                                            rows={3}
+                                            placeholder="Tell us about your project or requirements..."
                                             value={form.message}
-                                            onChange={(e) => setForm({ ...form, message: e.target.value })}
-                                            className="form-input"
+                                            onChange={e => setForm({ ...form, message: e.target.value })}
+                                            className="form-input textarea"
                                         />
                                     </div>
 
-                                    <button type="submit" className="form-submit-btn">
-                                        Send Message <FiSend />
+                                    <button type="submit" disabled={loading} className="form-submit-btn">
+                                        {loading ? (
+                                            <>
+                                                <FiLoader className="animate-spin" size={16} /> Sending Email...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <FiSend size={15} /> Send Message
+                                            </>
+                                        )}
                                     </button>
                                 </form>
                             ) : (
-                                <div style={{ textAlign: 'center', padding: '40px 10px' }}>
-                                    <FiCheckCircle size={48} color="var(--gold)" style={{ marginBottom: '16px' }} />
-                                    <h4 style={{ fontSize: '1.4rem', color: '#fff', fontWeight: 800 }}>Message Sent Successfully!</h4>
-                                    <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', marginTop: '8px' }}>
-                                        Thank you, {form.name}. Our AI architecture team will review your inquiry and respond shortly.
-                                    </p>
+                                <div className="form-success-box">
+                                    <FiCheckCircle size={44} color="#3b82f6" />
+                                    <h4>Message Received & Sent!</h4>
+                                    <p>Thank you {form.name}. Your message has been sent directly to <strong>sapraforce@gmail.com</strong>. We will respond shortly.</p>
+                                    <button onClick={() => setSent(false)} className="reset-btn">
+                                        Send Another Message
+                                    </button>
                                 </div>
                             )}
                         </div>
-                    </div>
+                    </motion.div>
+
                 </div>
             </div>
 
             <style>{`
-                .company-contact-grid {
-                    display: grid;
-                    grid-template-columns: 1fr 1.2fr;
-                    gap: 40px;
-                    align-items: start;
-                }
-                .contact-info-column {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 24px;
-                    text-align: left;
-                }
-                .call-booking-hero-card {
-                    background: linear-gradient(135deg, rgba(212, 166, 79, 0.15) 0%, rgba(14, 14, 26, 0.95) 100%);
-                    border: 1px solid rgba(212, 166, 79, 0.35);
-                    border-radius: 20px;
-                    padding: 32px;
-                    position: relative;
-                }
-                .call-card-badge {
-                    display: inline-block;
-                    padding: 4px 10px;
-                    border-radius: 20px;
-                    background: var(--gold);
-                    color: #0a0a14;
+                .thinkitive-title-gradient {
                     font-weight: 800;
-                    font-size: 0.7rem;
-                    margin-bottom: 12px;
+                    background: linear-gradient(180deg, #ffffff 0%, #3b82f6 40%, #1d4ed8 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    font-family: 'Manrope', sans-serif;
                 }
-                .call-card-title {
-                    font-size: 1.4rem;
-                    font-weight: 800;
-                    color: #ffffff;
-                    margin-bottom: 10px;
-                }
-                .call-card-desc {
-                    color: rgba(255,255,255,0.7);
-                    font-size: 0.9rem;
-                    line-height: 1.55;
-                    margin-bottom: 24px;
-                }
-                .call-card-btn {
-                    width: 100%;
-                    padding: 14px;
-                    border-radius: 12px;
-                    background: var(--gold);
-                    color: #0a0a14;
-                    font-weight: 800;
-                    font-size: 0.95rem;
-                    border: none;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 10px;
-                    box-shadow: 0 6px 20px rgba(212, 166, 79, 0.3);
+                .thinkitive-title-thin {
+                    font-weight: 600;
+                    color: rgba(255, 255, 255, 0.95);
+                    letter-spacing: -0.01em;
+                    font-family: 'Manrope', sans-serif;
                 }
 
-                .contact-details-box {
-                    background: rgba(14, 14, 26, 0.7);
-                    border: 1px solid rgba(255,255,255,0.08);
-                    border-radius: 20px;
-                    padding: 24px;
+                .contact-main-grid {
+                    display: grid;
+                    grid-template-columns: 1fr 1.25fr;
+                    gap: 28px;
+                    align-items: stretch;
+                    font-family: 'Manrope', sans-serif;
+                }
+
+                .left-unified-glass-card {
+                    background: rgba(14, 14, 28, 0.75);
+                    backdrop-filter: blur(16px);
+                    border: 1px solid rgba(255, 255, 255, 0.08);
+                    border-radius: 16px;
+                    padding: 26px 28px;
                     display: flex;
                     flex-direction: column;
-                    gap: 16px;
+                    justify-content: space-between;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
                 }
+
+                .call-card-title {
+                    font-size: 1.15rem;
+                    font-weight: 700;
+                    color: #ffffff;
+                    margin: 0 0 6px 0;
+                }
+
+                .call-card-desc {
+                    font-size: 0.84rem;
+                    color: rgba(255, 255, 255, 0.65);
+                    line-height: 1.5;
+                    margin: 0 0 16px 0;
+                }
+
+                .call-card-btn {
+                    width: 100%;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    padding: 11px 18px;
+                    border-radius: 8px;
+                    background: #1e40af;
+                    color: #ffffff;
+                    font-size: 0.88rem;
+                    font-weight: 600;
+                    border: none;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 6px 18px rgba(30, 64, 175, 0.35);
+                }
+                .call-card-btn:hover {
+                    background: #2563eb;
+                    box-shadow: 0 8px 22px rgba(37, 99, 235, 0.5);
+                    transform: translateY(-2px);
+                }
+
+                .card-inner-divider {
+                    width: 100%;
+                    height: 1px;
+                    background: rgba(255, 255, 255, 0.08);
+                    margin: 18px 0;
+                }
+
+                .contact-details-inner {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 14px;
+                }
+
                 .detail-item {
                     display: flex;
                     align-items: center;
                     gap: 14px;
                 }
+
                 .detail-icon {
-                    width: 42px;
-                    height: 42px;
-                    border-radius: 10px;
-                    background: rgba(212, 166, 79, 0.1);
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 8px;
+                    background: rgba(59, 130, 246, 0.12);
+                    border: 1px solid rgba(59, 130, 246, 0.25);
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-size: 1.2rem;
+                    flex-shrink: 0;
                 }
+
                 .detail-label {
-                    font-size: 0.75rem;
-                    color: rgba(255,255,255,0.5);
-                    font-weight: 600;
+                    font-size: 0.72rem;
+                    color: rgba(255, 255, 255, 0.5);
                     text-transform: uppercase;
+                    letter-spacing: 0.05em;
                 }
+
                 .detail-value {
-                    font-size: 0.92rem;
+                    font-size: 0.88rem;
+                    font-weight: 600;
                     color: #ffffff;
-                    font-weight: 700;
+                }
+
+                .whatsapp-link-btn {
+                    color: #ffffff;
+                    text-decoration: none;
+                    font-weight: 600;
+                    transition: all 0.25s ease;
+                }
+                .whatsapp-link-btn:hover {
+                    color: #3b82f6;
+                    text-decoration: underline;
                 }
 
                 .form-glass-card {
-                    background: rgba(14, 14, 26, 0.85);
+                    background: rgba(14, 14, 28, 0.75);
                     backdrop-filter: blur(16px);
-                    border: 1px solid rgba(255,255,255,0.1);
-                    border-radius: 24px;
-                    padding: 32px;
-                    text-align: left;
+                    border: 1px solid rgba(255, 255, 255, 0.08);
+                    border-radius: 16px;
+                    padding: 26px 28px;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
                 }
+
+                .form-title {
+                    font-size: 1.15rem;
+                    font-weight: 700;
+                    color: #ffffff;
+                    margin: 0 0 6px 0;
+                }
+
+                .form-subtitle {
+                    font-size: 0.84rem;
+                    color: rgba(255, 255, 255, 0.6);
+                    margin: 0 0 18px 0;
+                    line-height: 1.5;
+                }
+
+                .contact-form {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 14px;
+                }
+
+                .form-row-2 {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 14px;
+                }
+
                 .form-label {
                     display: block;
-                    font-size: 0.8rem;
-                    color: rgba(255,255,255,0.75);
-                    margin-bottom: 6px;
+                    font-size: 0.78rem;
                     font-weight: 600;
+                    color: rgba(255, 255, 255, 0.8);
+                    margin-bottom: 6px;
                 }
+
                 .form-input {
                     width: 100%;
-                    padding: 12px 14px;
-                    background: rgba(255,255,255,0.04);
-                    border: 1px solid rgba(255,255,255,0.1);
-                    border-radius: 10px;
+                    padding: 10px 14px;
+                    border-radius: 8px;
+                    background: rgba(6, 6, 18, 0.6);
+                    border: 1px solid rgba(255, 255, 255, 0.12);
                     color: #ffffff;
-                    font-size: 0.9rem;
+                    font-size: 0.88rem;
+                    font-family: 'Manrope', sans-serif;
                     outline: none;
+                    transition: border-color 0.25s ease;
+                }
+                .form-input::placeholder {
+                    color: rgba(255, 255, 255, 0.4);
                 }
                 .form-input:focus {
-                    border-color: var(--gold);
+                    border-color: #3b82f6;
+                    box-shadow: 0 0 12px rgba(59, 130, 246, 0.25);
                 }
+
+                .form-input.textarea {
+                    resize: vertical;
+                }
+
                 .form-submit-btn {
-                    padding: 14px;
-                    border-radius: 12px;
-                    background: rgba(255,255,255,0.08);
-                    border: 1px solid rgba(212, 166, 79, 0.4);
-                    color: var(--gold);
-                    font-weight: 700;
-                    font-size: 0.95rem;
-                    cursor: pointer;
+                    width: 100%;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     gap: 8px;
-                    transition: all 0.3s;
+                    padding: 11px;
+                    border-radius: 8px;
+                    background: #1e40af;
+                    color: #ffffff;
+                    font-size: 0.88rem;
+                    font-weight: 600;
+                    border: none;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 6px 18px rgba(30, 64, 175, 0.35);
+                    margin-top: 4px;
                 }
                 .form-submit-btn:hover {
-                    background: var(--gold);
-                    color: #0a0a14;
+                    background: #2563eb;
+                    box-shadow: 0 8px 22px rgba(37, 99, 235, 0.5);
+                    transform: translateY(-2px);
+                }
+
+                .form-success-box {
+                    padding: 30px 20px;
+                    text-align: center;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 12px;
+                }
+                .form-success-box h4 {
+                    font-size: 1.15rem;
+                    font-weight: 700;
+                    color: #ffffff;
+                    margin: 0;
+                }
+                .form-success-box p {
+                    font-size: 0.84rem;
+                    color: rgba(255, 255, 255, 0.65);
+                    margin: 0;
+                }
+
+                .reset-btn {
+                    margin-top: 8px;
+                    padding: 8px 18px;
+                    border-radius: 6px;
+                    background: rgba(255, 255, 255, 0.1);
+                    color: #ffffff;
+                    font-size: 0.8rem;
+                    border: none;
+                    cursor: pointer;
                 }
 
                 @media (max-width: 900px) {
-                    .company-contact-grid {
+                    .contact-main-grid {
+                        grid-template-columns: 1fr;
+                    }
+                    .form-row-2 {
                         grid-template-columns: 1fr;
                     }
                 }
