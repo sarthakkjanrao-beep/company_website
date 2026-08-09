@@ -67,7 +67,7 @@ export const Hero: React.FC<HeroProps> = ({ onBookCall }) => {
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth < 900);
+        const checkMobile = () => setIsMobile(window.innerWidth <= 668);
         checkMobile();
         window.addEventListener('resize', checkMobile);
         return () => window.removeEventListener('resize', checkMobile);
@@ -96,51 +96,36 @@ export const Hero: React.FC<HeroProps> = ({ onBookCall }) => {
     return (
         <section id="hero" style={{ position: 'relative', background: '#060612', paddingTop: '80px', overflow: 'hidden' }}>
 
-            {/* ── Thinkitive Accordion Hero Container ── */}
-            <div style={{
-                maxWidth: '1440px',
-                margin: '0 auto',
-                padding: isMobile ? '12px' : '20px 24px',
-                height: isMobile ? 'auto' : 'calc(90vh - 80px)',
-                minHeight: isMobile ? '560px' : '620px',
-                maxHeight: '820px',
-                display: 'flex',
-                gap: isMobile ? '8px' : '12px',
-                flexDirection: isMobile ? 'column' : 'row',
-                position: 'relative',
-            }}>
-                {slides.map((s, idx) => {
-                    const isActive = idx === active;
-
-                    return (
+            {isMobile ? (
+                /* ── MOBILE THINKITIVE CAROUSEL SLIDER ── */
+                <div style={{ padding: '16px 12px 24px', position: 'relative' }}>
+                    <div style={{
+                        position: 'relative',
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}>
                         <motion.div
-                            key={s.id}
-                            onClick={() => selectSlide(idx)}
-                            layout
-                            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                            key={active}
+                            initial={{ opacity: 0.8, scale: 0.96 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.4 }}
                             style={{
-                                position: 'relative',
-                                flex: isMobile
-                                    ? (isActive ? '1 1 auto' : '0 0 52px')
-                                    : (isActive ? '1 1 0%' : '0 0 60px'),
-                                minWidth: isMobile ? '100%' : (isActive ? '480px' : '60px'),
-                                height: isMobile ? (isActive ? '450px' : '52px') : '100%',
+                                width: '92vw',
+                                maxWidth: '420px',
+                                height: '480px',
                                 borderRadius: '24px',
                                 overflow: 'hidden',
-                                cursor: isActive ? 'default' : 'pointer',
-                                border: isActive
-                                    ? '1px solid rgba(255, 255, 255, 0.15)'
-                                    : '1px solid rgba(255, 255, 255, 0.08)',
-                                boxShadow: isActive
-                                    ? `0 20px 60px rgba(0,0,0,0.6), 0 0 40px ${s.accentGlow}`
-                                    : 'none',
-                                transition: 'border-color 0.4s, box-shadow 0.4s',
+                                position: 'relative',
+                                border: '1px solid rgba(255, 255, 255, 0.15)',
+                                boxShadow: `0 20px 50px rgba(0,0,0,0.8), 0 0 30px ${slides[active].accentGlow}`,
                             }}
                         >
                             {/* Photo Background */}
                             <img
-                                src={s.bgImage}
-                                alt={s.shortTitle}
+                                src={slides[active].bgImage}
+                                alt={slides[active].shortTitle}
                                 style={{
                                     position: 'absolute',
                                     inset: 0,
@@ -148,8 +133,6 @@ export const Hero: React.FC<HeroProps> = ({ onBookCall }) => {
                                     height: '100%',
                                     objectFit: 'cover',
                                     objectPosition: 'center',
-                                    filter: isActive ? 'brightness(0.95)' : 'brightness(0.5) opacity(0.6)',
-                                    transition: 'filter 0.5s ease',
                                 }}
                             />
 
@@ -157,176 +140,352 @@ export const Hero: React.FC<HeroProps> = ({ onBookCall }) => {
                             <div style={{
                                 position: 'absolute',
                                 inset: 0,
-                                background: isActive
-                                    ? s.overlay
-                                    : 'linear-gradient(180deg, rgba(6,6,18,0.75) 0%, rgba(6,6,18,0.95) 100%)',
-                                transition: 'background 0.5s ease',
+                                background: 'linear-gradient(180deg, rgba(6,6,18,0.4) 0%, rgba(6,6,18,0.85) 60%, rgba(6,6,18,0.98) 100%)',
                             }} />
 
-                            {/* ── COLLAPSED WRAPPED STATE (Rotated label + '+' button) ── */}
-                            {!isActive && (
+                            {/* Mobile Card Content */}
+                            <div style={{
+                                position: 'relative',
+                                zIndex: 3,
+                                height: '100%',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                                padding: '24px 20px',
+                                boxSizing: 'border-box',
+                            }}>
+                                {/* Eyebrow Header */}
+                                <div style={{
+                                    fontSize: '0.85rem',
+                                    fontWeight: 700,
+                                    color: 'rgba(255,255,255,0.9)',
+                                    letterSpacing: '0.04em',
+                                    textAlign: 'center',
+                                    paddingTop: '6px',
+                                }}>
+                                    {slides[active].eyebrow}
+                                </div>
+
+                                {/* Center Titles */}
+                                <div style={{ marginTop: 'auto', marginBottom: 'auto' }}>
+                                    <h1 style={{
+                                        fontSize: '1.85rem',
+                                        fontWeight: 800,
+                                        lineHeight: 1.15,
+                                        color: '#ffffff',
+                                        margin: '0 0 14px 0',
+                                        letterSpacing: '-0.02em',
+                                        whiteSpace: 'pre-line',
+                                        textAlign: 'center',
+                                    }}>
+                                        {slides[active].headlineLeft}
+                                    </h1>
+
+                                    {/* White Horizontal Line */}
+                                    <div style={{
+                                        width: '100%',
+                                        height: '2px',
+                                        background: 'rgba(255, 255, 255, 0.4)',
+                                        margin: '16px 0',
+                                        borderRadius: '2px',
+                                    }} />
+
+                                    <h2 style={{
+                                        fontSize: '1.35rem',
+                                        fontWeight: 700,
+                                        lineHeight: 1.2,
+                                        color: 'rgba(255,255,255,0.95)',
+                                        margin: '14px 0 0 0',
+                                        whiteSpace: 'pre-line',
+                                        textAlign: 'center',
+                                    }}>
+                                        {slides[active].subRight}
+                                    </h2>
+                                </div>
+
+
+                            </div>
+                        </motion.div>
+                    </div>
+
+                    {/* Controls Row: Animated progress bar */}
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginTop: '20px',
+                    }}>
+                        <div style={{
+                            width: '160px',
+                            height: '4px',
+                            background: 'rgba(255,255,255,0.2)',
+                            borderRadius: '2px',
+                            overflow: 'hidden',
+                        }}>
+                            <motion.div
+                                key={progressKey}
+                                initial={{ width: '0%' }}
+                                animate={{ width: '100%' }}
+                                transition={{ duration: 7, ease: 'linear' }}
+                                style={{
+                                    height: '100%',
+                                    background: '#3b82f6',
+                                    borderRadius: '2px',
+                                }}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Pagination Dots */}
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '14px' }}>
+                        {slides.map((_, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => selectSlide(idx)}
+                                style={{
+                                    width: active === idx ? '24px' : '8px',
+                                    height: '8px',
+                                    borderRadius: '4px',
+                                    background: active === idx ? '#3b82f6' : 'rgba(255,255,255,0.3)',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease',
+                                }}
+                            />
+                        ))}
+                    </div>
+                </div>
+            ) : (
+                /* ── DESKTOP THINKITIVE ACCORDION HERO CONTAINER ── */
+                <div style={{
+                    maxWidth: '1440px',
+                    margin: '0 auto',
+                    padding: '20px 24px',
+                    height: 'calc(90vh - 80px)',
+                    minHeight: '620px',
+                    maxHeight: '820px',
+                    display: 'flex',
+                    gap: '12px',
+                    flexDirection: 'row',
+                    position: 'relative',
+                }}>
+                    {slides.map((s, idx) => {
+                        const isActive = idx === active;
+
+                        return (
+                            <motion.div
+                                key={s.id}
+                                onClick={() => selectSlide(idx)}
+                                layout
+                                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                                style={{
+                                    position: 'relative',
+                                    flex: isActive ? '1 1 0%' : '0 0 48px',
+                                    minWidth: isActive ? '280px' : '48px',
+                                    height: '100%',
+                                    borderRadius: '24px',
+                                    overflow: 'hidden',
+                                    cursor: isActive ? 'default' : 'pointer',
+                                    border: isActive
+                                        ? '1px solid rgba(255, 255, 255, 0.15)'
+                                        : '1px solid rgba(255, 255, 255, 0.08)',
+                                    boxShadow: isActive
+                                        ? `0 20px 60px rgba(0,0,0,0.6), 0 0 40px ${s.accentGlow}`
+                                        : 'none',
+                                    transition: 'border-color 0.4s, box-shadow 0.4s',
+                                }}
+                            >
+                                {/* Photo Background */}
+                                <img
+                                    src={s.bgImage}
+                                    alt={s.shortTitle}
+                                    style={{
+                                        position: 'absolute',
+                                        inset: 0,
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'cover',
+                                        objectPosition: 'center',
+                                        filter: isActive ? 'brightness(0.95)' : 'brightness(0.5) opacity(0.6)',
+                                        transition: 'filter 0.5s ease',
+                                    }}
+                                />
+
+                                {/* Dark Overlay */}
                                 <div style={{
                                     position: 'absolute',
                                     inset: 0,
-                                    display: 'flex',
-                                    flexDirection: isMobile ? 'row' : 'column',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                    padding: isMobile ? '0 20px' : '32px 0',
-                                    zIndex: 2,
-                                }}>
-                                    <div style={{ width: '8px', height: '8px' }} />
+                                    background: isActive
+                                        ? s.overlay
+                                        : 'linear-gradient(180deg, rgba(6,6,18,0.75) 0%, rgba(6,6,18,0.95) 100%)',
+                                    transition: 'background 0.5s ease',
+                                }} />
 
-                                    {/* Rotated Title Label */}
+                                {/* ── COLLAPSED WRAPPED STATE (Rotated label + '+' button) ── */}
+                                {!isActive && (
                                     <div style={{
-                                        transform: isMobile ? 'none' : 'rotate(-90deg)',
-                                        whiteSpace: 'nowrap',
-                                        fontSize: '0.88rem',
-                                        fontWeight: 700,
-                                        color: 'rgba(255,255,255,0.85)',
-                                        letterSpacing: '0.04em',
-                                    }}>
-                                        {s.shortTitle}
-                                    </div>
-
-                                    {/* Plus Button */}
-                                    <div style={{
-                                        width: '30px',
-                                        height: '30px',
-                                        borderRadius: '50%',
-                                        background: 'rgba(255,255,255,0.1)',
-                                        border: '1px solid rgba(255,255,255,0.25)',
+                                        position: 'absolute',
+                                        inset: 0,
                                         display: 'flex',
+                                        flexDirection: 'column',
                                         alignItems: 'center',
-                                        justifyContent: 'center',
-                                        color: '#ffffff',
+                                        justifyContent: 'space-between',
+                                        padding: '32px 0',
+                                        zIndex: 2,
                                     }}>
-                                        <FiPlus size={15} />
-                                    </div>
-                                </div>
-                            )}
+                                        <div style={{ width: '8px', height: '8px' }} />
 
-                            {/* ── EXPANDED THINKITIVE-STYLE ACTIVE SLIDE ── */}
-                            {isActive && (
-                                <div style={{
-                                    position: 'relative',
-                                    zIndex: 3,
-                                    height: '100%',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'space-between',
-                                    padding: isMobile ? '28px 24px' : '48px 56px',
-                                    boxSizing: 'border-box',
-                                }}>
-                                    {/* Top Left Eyebrow Header */}
-                                    <div style={{
-                                        fontSize: isMobile ? '0.9rem' : '1.15rem',
-                                        fontWeight: 700,
-                                        color: '#ffffff',
-                                        letterSpacing: '-0.01em',
-                                    }}>
-                                        {s.eyebrow}
-                                    </div>
-
-                                    {/* Center Content with Split Headlines and Horizontal Progress Line */}
-                                    <div style={{ position: 'relative', width: '100%', margin: 'auto 0' }}>
-
-                                        {/* Left Side Main Statement */}
-                                        <div style={{ marginBottom: '16px' }}>
-                                            <h1 style={{
-                                                fontSize: 'clamp(2rem, 4.2vw, 3.8rem)',
-                                                fontWeight: 800,
-                                                lineHeight: 1.1,
-                                                color: '#ffffff',
-                                                margin: 0,
-                                                letterSpacing: '-0.02em',
-                                                whiteSpace: 'pre-line',
-                                            }}>
-                                                {s.headlineLeft}
-                                            </h1>
-                                        </div>
-
-                                        {/* ── Horizontal Animated Progress Loader Line (Lifecycle indicator) ── */}
+                                        {/* Rotated Title Label */}
                                         <div style={{
-                                            position: 'relative',
-                                            width: '100%',
-                                            height: '2px',
-                                            background: 'rgba(255, 255, 255, 0.25)',
-                                            margin: '24px 0',
-                                            borderRadius: '2px',
-                                            overflow: 'hidden',
+                                            transform: 'rotate(-90deg)',
+                                            whiteSpace: 'nowrap',
+                                            fontSize: '0.88rem',
+                                            fontWeight: 700,
+                                            color: 'rgba(255,255,255,0.85)',
+                                            letterSpacing: '0.04em',
                                         }}>
-                                            {/* Animated fill line running from 0% to 100% over 7 seconds */}
-                                            <motion.div
-                                                key={progressKey}
-                                                initial={{ width: '0%' }}
-                                                animate={{ width: '100%' }}
-                                                transition={{ duration: 7, ease: 'linear' }}
-                                                style={{
-                                                    height: '100%',
-                                                    background: '#ffffff',
-                                                    boxShadow: '0 0 12px rgba(255,255,255,0.9)',
-                                                }}
-                                            />
+                                            {s.shortTitle}
                                         </div>
 
-                                        {/* Right Side Sub Statement & Contact Us Button */}
+                                        {/* Plus Button */}
                                         <div style={{
+                                            width: '30px',
+                                            height: '30px',
+                                            borderRadius: '50%',
+                                            background: 'rgba(255,255,255,0.1)',
+                                            border: '1px solid rgba(255,255,255,0.25)',
                                             display: 'flex',
-                                            flexDirection: 'column',
-                                            alignItems: 'flex-end',
-                                            textAlign: 'right',
-                                            marginTop: '16px',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            color: '#ffffff',
                                         }}>
-                                            <h2 style={{
-                                                fontSize: 'clamp(1.5rem, 3.2vw, 2.8rem)',
-                                                fontWeight: 800,
-                                                lineHeight: 1.15,
-                                                color: '#ffffff',
-                                                margin: '0 0 24px 0',
-                                                letterSpacing: '-0.02em',
-                                                whiteSpace: 'pre-line',
-                                            }}>
-                                                {s.subRight}
-                                            </h2>
+                                            <FiPlus size={15} />
+                                        </div>
+                                    </div>
+                                )}
 
-                                            {/* Contact Us → Pill Button */}
-                                            <button
-                                                onClick={onBookCall}
-                                                style={{
-                                                    display: 'inline-flex',
-                                                    alignItems: 'center',
-                                                    gap: '10px',
-                                                    padding: '12px 28px',
-                                                    borderRadius: '8px',
-                                                    background: 'transparent',
-                                                    color: '#ffffff',
-                                                    fontWeight: 700,
-                                                    fontSize: '1rem',
-                                                    border: '1.5px solid #ffffff',
-                                                    cursor: 'pointer',
-                                                    transition: 'all 0.25s ease',
-                                                }}
-                                                onMouseEnter={e => {
-                                                    (e.currentTarget as HTMLElement).style.background = '#ffffff';
-                                                    (e.currentTarget as HTMLElement).style.color = '#000000';
-                                                }}
-                                                onMouseLeave={e => {
-                                                    (e.currentTarget as HTMLElement).style.background = 'transparent';
-                                                    (e.currentTarget as HTMLElement).style.color = '#ffffff';
-                                                }}
-                                            >
-                                                Contact Us <FiArrowRight size={16} />
-                                            </button>
+                                {/* ── EXPANDED THINKITIVE-STYLE ACTIVE SLIDE ── */}
+                                {isActive && (
+                                    <div style={{
+                                        position: 'relative',
+                                        zIndex: 3,
+                                        height: '100%',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'space-between',
+                                        padding: '48px 56px',
+                                        boxSizing: 'border-box',
+                                    }}>
+                                        {/* Top Left Eyebrow Header */}
+                                        <div style={{
+                                            fontSize: '1.15rem',
+                                            fontWeight: 700,
+                                            color: '#ffffff',
+                                            letterSpacing: '-0.01em',
+                                        }}>
+                                            {s.eyebrow}
                                         </div>
 
+                                        {/* Center Content with Split Headlines and Horizontal Progress Line */}
+                                        <div style={{ position: 'relative', width: '100%', margin: 'auto 0' }}>
+
+                                            {/* Left Side Main Statement */}
+                                            <div style={{ marginBottom: '16px' }}>
+                                                <h1 style={{
+                                                    fontSize: 'clamp(2rem, 4.2vw, 3.8rem)',
+                                                    fontWeight: 800,
+                                                    lineHeight: 1.1,
+                                                    color: '#ffffff',
+                                                    margin: 0,
+                                                    letterSpacing: '-0.02em',
+                                                    whiteSpace: 'pre-line',
+                                                }}>
+                                                    {s.headlineLeft}
+                                                </h1>
+                                            </div>
+
+                                            {/* ── Horizontal Animated Progress Loader Line (Lifecycle indicator) ── */}
+                                            <div style={{
+                                                position: 'relative',
+                                                width: '100%',
+                                                height: '2px',
+                                                background: 'rgba(255, 255, 255, 0.25)',
+                                                margin: '24px 0',
+                                                borderRadius: '2px',
+                                                overflow: 'hidden',
+                                            }}>
+                                                {/* Animated fill line running from 0% to 100% over 7 seconds */}
+                                                <motion.div
+                                                    key={progressKey}
+                                                    initial={{ width: '0%' }}
+                                                    animate={{ width: '100%' }}
+                                                    transition={{ duration: 7, ease: 'linear' }}
+                                                    style={{
+                                                        height: '100%',
+                                                        background: '#ffffff',
+                                                        boxShadow: '0 0 12px rgba(255,255,255,0.9)',
+                                                    }}
+                                                />
+                                            </div>
+
+                                            {/* Right Side Sub Statement & Contact Us Button */}
+                                            <div style={{
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                alignItems: 'flex-end',
+                                                textAlign: 'right',
+                                                marginTop: '16px',
+                                            }}>
+                                                <h2 style={{
+                                                    fontSize: 'clamp(1.5rem, 3.2vw, 2.8rem)',
+                                                    fontWeight: 800,
+                                                    lineHeight: 1.15,
+                                                    color: '#ffffff',
+                                                    margin: '0 0 24px 0',
+                                                    letterSpacing: '-0.02em',
+                                                    whiteSpace: 'pre-line',
+                                                }}>
+                                                    {s.subRight}
+                                                </h2>
+
+                                                {/* Contact Us → Pill Button */}
+                                                <button
+                                                    onClick={onBookCall}
+                                                    style={{
+                                                        display: 'inline-flex',
+                                                        alignItems: 'center',
+                                                        gap: '10px',
+                                                        padding: '12px 28px',
+                                                        borderRadius: '8px',
+                                                        background: 'transparent',
+                                                        color: '#ffffff',
+                                                        fontWeight: 700,
+                                                        fontSize: '1rem',
+                                                        border: '1.5px solid #ffffff',
+                                                        cursor: 'pointer',
+                                                        transition: 'all 0.25s ease',
+                                                    }}
+                                                    onMouseEnter={e => {
+                                                        (e.currentTarget as HTMLElement).style.background = '#ffffff';
+                                                        (e.currentTarget as HTMLElement).style.color = '#000000';
+                                                    }}
+                                                    onMouseLeave={e => {
+                                                        (e.currentTarget as HTMLElement).style.background = 'transparent';
+                                                        (e.currentTarget as HTMLElement).style.color = '#ffffff';
+                                                    }}
+                                                >
+                                                    Contact Us <FiArrowRight size={16} />
+                                                </button>
+                                            </div>
+
+                                        </div>
                                     </div>
-                                </div>
-                            )}
-                        </motion.div>
-                    );
-                })}
-            </div>
+                                )}
+                            </motion.div>
+                        );
+                    })}
+                </div>
+            )}
 
             {/* ── Partner Marquee ── */}
             <div style={{
