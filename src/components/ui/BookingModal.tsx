@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiX, FiCalendar, FiClock, FiCheckCircle, FiUser, FiMail, FiBriefcase, FiArrowRight } from 'react-icons/fi';
-import { companyData } from '../../data/company';
+import { FiX, FiCalendar, FiClock, FiCheckCircle, FiSend, FiLoader } from 'react-icons/fi';
 
 interface BookingModalProps {
     isOpen: boolean;
@@ -10,22 +9,48 @@ interface BookingModalProps {
 
 export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
     const [submitted, setSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        company: '',
-        useCase: 'Workflow Automation',
-        details: '',
+        phone: '',
+        service: 'Custom Business Automation',
+        message: '',
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setSubmitted(true);
+        setLoading(true);
+
+        try {
+            // Direct automated email delivery to sapraforce@gmail.com via FormSubmit AJAX service
+            await fetch('https://formsubmit.co/ajax/sapraforce@gmail.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    _subject: `📅 New Strategy Call Booking: ${formData.name}`,
+                    'Full Name': formData.name,
+                    'Work Email': formData.email,
+                    'Phone Number': formData.phone || 'Not Provided',
+                    'Service Interested': formData.service,
+                    'Project Brief': formData.message || 'No additional details',
+                    _captcha: 'false',
+                }),
+            });
+        } catch (error) {
+            console.error('Email dispatch error:', error);
+        } finally {
+            setLoading(false);
+            setSubmitted(true);
+        }
     };
 
     const handleReset = () => {
         setSubmitted(false);
-        setFormData({ name: '', email: '', company: '', useCase: 'Workflow Automation', details: '' });
+        setFormData({ name: '', email: '', phone: '', service: 'Custom Business Automation', message: '' });
         onClose();
     };
 
@@ -41,6 +66,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
                         alignItems: 'center',
                         justifyContent: 'center',
                         padding: '20px',
+                        fontFamily: "'Manrope', sans-serif",
                     }}
                 >
                     {/* Backdrop */}
@@ -52,29 +78,29 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
                         style={{
                             position: 'absolute',
                             inset: 0,
-                            background: 'rgba(5, 5, 10, 0.85)',
-                            backdropFilter: 'blur(10px)',
+                            background: 'rgba(5, 5, 12, 0.88)',
+                            backdropFilter: 'blur(12px)',
                         }}
                     />
 
-                    {/* Modal Window */}
+                    {/* Modal Content Window */}
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.92, y: 20 }}
+                        initial={{ opacity: 0, scale: 0.95, y: 15 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.92, y: 20 }}
+                        exit={{ opacity: 0, scale: 0.95, y: 15 }}
                         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
                         style={{
                             position: 'relative',
                             zIndex: 10,
                             width: '100%',
-                            maxWidth: '580px',
+                            maxWidth: '540px',
                             maxHeight: '90vh',
                             overflowY: 'auto',
-                            background: '#0e0e1a',
-                            border: '1px solid rgba(212, 166, 79, 0.25)',
-                            borderRadius: '24px',
-                            padding: '32px',
-                            boxShadow: '0 20px 60px rgba(0,0,0,0.8), 0 0 30px rgba(212, 166, 79, 0.15)',
+                            background: '#0a0a16',
+                            border: '1px solid rgba(59, 130, 246, 0.3)',
+                            borderRadius: '20px',
+                            padding: '30px',
+                            boxShadow: '0 20px 60px rgba(0,0,0,0.8), 0 0 30px rgba(59, 130, 246, 0.15)',
                         }}
                     >
                         {/* Close Button */}
@@ -87,258 +113,251 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
                                 background: 'rgba(255,255,255,0.06)',
                                 border: '1px solid rgba(255,255,255,0.1)',
                                 borderRadius: '50%',
-                                width: '36px',
-                                height: '36px',
+                                width: '34px',
+                                height: '34px',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                color: '#fff',
+                                color: '#ffffff',
                                 cursor: 'pointer',
                                 transition: 'all 0.2s',
                             }}
                         >
-                            <FiX size={18} />
+                            <FiX size={16} />
                         </button>
 
                         {!submitted ? (
                             <>
-                                <div style={{ marginBottom: '24px' }}>
+                                <div style={{ marginBottom: '20px' }}>
                                     <div
                                         style={{
                                             display: 'inline-flex',
                                             alignItems: 'center',
-                                            gap: '8px',
-                                            padding: '6px 14px',
-                                            borderRadius: '20px',
-                                            background: 'rgba(212, 166, 79, 0.12)',
-                                            border: '1px solid rgba(212, 166, 79, 0.3)',
-                                            color: 'var(--gold)',
-                                            fontSize: '0.8rem',
-                                            fontWeight: 600,
-                                            marginBottom: '12px',
+                                            gap: '6px',
+                                            padding: '4px 12px',
+                                            borderRadius: '6px',
+                                            background: 'rgba(59, 130, 246, 0.15)',
+                                            border: '1px solid rgba(59, 130, 246, 0.3)',
+                                            color: '#3b82f6',
+                                            fontSize: '0.78rem',
+                                            fontWeight: 700,
+                                            marginBottom: '10px',
                                         }}
                                     >
-                                        <FiCalendar size={14} /> Schedule 1-on-1 AI Strategy Session
+                                        <FiCalendar size={13} /> Schedule 1-on-1 Call
                                     </div>
-                                    <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#fff', margin: '0 0 8px 0' }}>
-                                        Book a 30-Min AI Audit Call
+                                    <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#ffffff', margin: '0 0 6px 0' }}>
+                                        Book a 30-Min Strategy Call
                                     </h2>
-                                    <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', lineHeight: 1.5 }}>
-                                        Discover how {companyData.name} can automate your business processes and save your team thousands of manual hours.
+                                    <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.86rem', lineHeight: 1.5, margin: 0 }}>
+                                        Fill in your details below and an email notification will be sent directly to sapraforce@gmail.com.
                                     </p>
                                 </div>
 
                                 <div
                                     style={{
                                         display: 'flex',
-                                        gap: '16px',
-                                        padding: '12px 16px',
+                                        alignItems: 'center',
+                                        gap: '12px',
+                                        padding: '10px 14px',
                                         background: 'rgba(255,255,255,0.03)',
-                                        borderRadius: '12px',
-                                        border: '1px solid rgba(255,255,255,0.06)',
-                                        marginBottom: '24px',
-                                        fontSize: '0.82rem',
-                                        color: 'rgba(255,255,255,0.8)',
+                                        borderRadius: '10px',
+                                        border: '1px solid rgba(255,255,255,0.08)',
+                                        marginBottom: '20px',
+                                        fontSize: '0.8rem',
+                                        color: 'rgba(255,255,255,0.75)',
                                     }}
                                 >
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                        <FiClock color="var(--gold)" /> 30 Minutes
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#3b82f6', fontWeight: 600 }}>
+                                        <FiClock size={14} /> 30 Minutes
                                     </div>
                                     <div>•</div>
                                     <div>Google Meet / Zoom</div>
                                     <div>•</div>
-                                    <div>100% Free Consultation</div>
+                                    <div>Free Strategy Consultation</div>
                                 </div>
 
-                                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                                     <div>
-                                        <label style={{ display: 'block', fontSize: '0.82rem', color: 'rgba(255,255,255,0.8)', marginBottom: '6px', fontWeight: 500 }}>
-                                            Your Full Name *
+                                        <label style={{ display: 'block', fontSize: '0.78rem', color: 'rgba(255,255,255,0.8)', marginBottom: '6px', fontWeight: 600 }}>
+                                            Full Name *
                                         </label>
-                                        <div style={{ position: 'relative' }}>
-                                            <FiUser style={{ position: 'absolute', left: '14px', top: '14px', color: 'rgba(255,255,255,0.4)' }} />
+                                        <input
+                                            type="text"
+                                            required
+                                            placeholder="Enter your name"
+                                            value={formData.name}
+                                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                            style={{
+                                                width: '100%',
+                                                padding: '10px 14px',
+                                                background: 'rgba(6, 6, 18, 0.7)',
+                                                border: '1px solid rgba(255,255,255,0.12)',
+                                                borderRadius: '8px',
+                                                color: '#ffffff',
+                                                fontSize: '0.88rem',
+                                                fontFamily: "'Manrope', sans-serif",
+                                                outline: 'none',
+                                            }}
+                                        />
+                                    </div>
+
+                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                                        <div>
+                                            <label style={{ display: 'block', fontSize: '0.78rem', color: 'rgba(255,255,255,0.8)', marginBottom: '6px', fontWeight: 600 }}>
+                                                Work Email *
+                                            </label>
                                             <input
-                                                type="text"
+                                                type="email"
                                                 required
-                                                placeholder="e.g. Sarah Jenkins"
-                                                value={formData.name}
-                                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                                placeholder="Enter your email address"
+                                                value={formData.email}
+                                                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                                 style={{
                                                     width: '100%',
-                                                    padding: '12px 14px 12px 42px',
-                                                    background: 'rgba(255,255,255,0.05)',
+                                                    padding: '10px 14px',
+                                                    background: 'rgba(6, 6, 18, 0.7)',
                                                     border: '1px solid rgba(255,255,255,0.12)',
-                                                    borderRadius: '10px',
-                                                    color: '#fff',
-                                                    fontSize: '0.9rem',
+                                                    borderRadius: '8px',
+                                                    color: '#ffffff',
+                                                    fontSize: '0.88rem',
+                                                    fontFamily: "'Manrope', sans-serif",
+                                                    outline: 'none',
+                                                }}
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label style={{ display: 'block', fontSize: '0.78rem', color: 'rgba(255,255,255,0.8)', marginBottom: '6px', fontWeight: 600 }}>
+                                                Phone Number
+                                            </label>
+                                            <input
+                                                type="tel"
+                                                placeholder="Enter your phone number"
+                                                value={formData.phone}
+                                                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                                style={{
+                                                    width: '100%',
+                                                    padding: '10px 14px',
+                                                    background: 'rgba(6, 6, 18, 0.7)',
+                                                    border: '1px solid rgba(255,255,255,0.12)',
+                                                    borderRadius: '8px',
+                                                    color: '#ffffff',
+                                                    fontSize: '0.88rem',
+                                                    fontFamily: "'Manrope', sans-serif",
                                                     outline: 'none',
                                                 }}
                                             />
                                         </div>
                                     </div>
 
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                                        <div>
-                                            <label style={{ display: 'block', fontSize: '0.82rem', color: 'rgba(255,255,255,0.8)', marginBottom: '6px', fontWeight: 500 }}>
-                                                Work Email *
-                                            </label>
-                                            <div style={{ position: 'relative' }}>
-                                                <FiMail style={{ position: 'absolute', left: '14px', top: '14px', color: 'rgba(255,255,255,0.4)' }} />
-                                                <input
-                                                    type="email"
-                                                    required
-                                                    placeholder="sarah@company.com"
-                                                    value={formData.email}
-                                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                                    style={{
-                                                        width: '100%',
-                                                        padding: '12px 14px 12px 42px',
-                                                        background: 'rgba(255,255,255,0.05)',
-                                                        border: '1px solid rgba(255,255,255,0.12)',
-                                                        borderRadius: '10px',
-                                                        color: '#fff',
-                                                        fontSize: '0.9rem',
-                                                        outline: 'none',
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <label style={{ display: 'block', fontSize: '0.82rem', color: 'rgba(255,255,255,0.8)', marginBottom: '6px', fontWeight: 500 }}>
-                                                Company Name
-                                            </label>
-                                            <div style={{ position: 'relative' }}>
-                                                <FiBriefcase style={{ position: 'absolute', left: '14px', top: '14px', color: 'rgba(255,255,255,0.4)' }} />
-                                                <input
-                                                    type="text"
-                                                    placeholder="Acme Corp"
-                                                    value={formData.company}
-                                                    onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                                                    style={{
-                                                        width: '100%',
-                                                        padding: '12px 14px 12px 42px',
-                                                        background: 'rgba(255,255,255,0.05)',
-                                                        border: '1px solid rgba(255,255,255,0.12)',
-                                                        borderRadius: '10px',
-                                                        color: '#fff',
-                                                        fontSize: '0.9rem',
-                                                        outline: 'none',
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     <div>
-                                        <label style={{ display: 'block', fontSize: '0.82rem', color: 'rgba(255,255,255,0.8)', marginBottom: '6px', fontWeight: 500 }}>
-                                            Primary Focus Area
+                                        <label style={{ display: 'block', fontSize: '0.78rem', color: 'rgba(255,255,255,0.8)', marginBottom: '6px', fontWeight: 600 }}>
+                                            Service Interested In
                                         </label>
                                         <select
-                                            value={formData.useCase}
-                                            onChange={(e) => setFormData({ ...formData, useCase: e.target.value })}
+                                            value={formData.service}
+                                            onChange={(e) => setFormData({ ...formData, service: e.target.value })}
                                             style={{
                                                 width: '100%',
-                                                padding: '12px 14px',
-                                                background: '#161626',
+                                                padding: '10px 14px',
+                                                background: '#0a0a16',
                                                 border: '1px solid rgba(255,255,255,0.12)',
-                                                borderRadius: '10px',
-                                                color: '#fff',
-                                                fontSize: '0.9rem',
+                                                borderRadius: '8px',
+                                                color: '#ffffff',
+                                                fontSize: '0.88rem',
+                                                fontFamily: "'Manrope', sans-serif",
                                                 outline: 'none',
                                             }}
                                         >
-                                            <option value="Workflow Automation">Workflow & Process Automation (Make / n8n)</option>
-                                            <option value="Autonomous AI Agents">Autonomous AI Agents & Swarms</option>
-                                            <option value="Enterprise RAG Search">Enterprise Knowledge Base & RAG</option>
-                                            <option value="Custom AI Engineering">Custom AI Engineering & ERP Sync</option>
+                                            <option value="Custom Business Automation">Custom Business Automation</option>
+                                            <option value="AI Agent">AI Agent</option>
+                                            <option value="Custom Software Development">Custom Software Development</option>
+                                            <option value="Custom Web Applications">Custom Web Applications</option>
                                         </select>
                                     </div>
 
                                     <div>
-                                        <label style={{ display: 'block', fontSize: '0.82rem', color: 'rgba(255,255,255,0.8)', marginBottom: '6px', fontWeight: 500 }}>
-                                            Briefly describe your current manual bottlenecks
+                                        <label style={{ display: 'block', fontSize: '0.78rem', color: 'rgba(255,255,255,0.8)', marginBottom: '6px', fontWeight: 600 }}>
+                                            Project Brief / Details
                                         </label>
                                         <textarea
                                             rows={3}
-                                            placeholder="e.g., We spend 20 hours a week manually copy-pasting data between Salesforce and our ERP..."
-                                            value={formData.details}
-                                            onChange={(e) => setFormData({ ...formData, details: e.target.value })}
+                                            placeholder="Tell us about the processes or workflows you want to automate..."
+                                            value={formData.message}
+                                            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                                             style={{
                                                 width: '100%',
-                                                padding: '12px 14px',
-                                                background: 'rgba(255,255,255,0.05)',
+                                                padding: '10px 14px',
+                                                background: 'rgba(6, 6, 18, 0.7)',
                                                 border: '1px solid rgba(255,255,255,0.12)',
-                                                borderRadius: '10px',
-                                                color: '#fff',
+                                                borderRadius: '8px',
+                                                color: '#ffffff',
                                                 fontSize: '0.88rem',
+                                                fontFamily: "'Manrope', sans-serif",
                                                 outline: 'none',
-                                                resize: 'none',
+                                                resize: 'vertical',
                                             }}
                                         />
                                     </div>
 
                                     <button
                                         type="submit"
+                                        disabled={loading}
                                         style={{
-                                            marginTop: '8px',
                                             width: '100%',
-                                            padding: '14px',
-                                            background: 'linear-gradient(135deg, var(--gold) 0%, #b88a38 100%)',
-                                            border: 'none',
-                                            borderRadius: '12px',
-                                            color: '#0a0a14',
-                                            fontSize: '1rem',
-                                            fontWeight: 700,
-                                            cursor: 'pointer',
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'center',
                                             gap: '8px',
-                                            boxShadow: '0 8px 25px rgba(212, 166, 79, 0.3)',
-                                            transition: 'transform 0.2s, boxShadow 0.2s',
+                                            padding: '12px',
+                                            borderRadius: '8px',
+                                            background: '#1e40af',
+                                            color: '#ffffff',
+                                            fontSize: '0.9rem',
+                                            fontWeight: 600,
+                                            border: 'none',
+                                            cursor: loading ? 'not-allowed' : 'pointer',
+                                            opacity: loading ? 0.8 : 1,
+                                            boxShadow: '0 6px 18px rgba(30, 64, 175, 0.4)',
+                                            marginTop: '4px',
+                                            fontFamily: "'Manrope', sans-serif",
                                         }}
                                     >
-                                        Confirm Booking Request <FiArrowRight />
+                                        {loading ? (
+                                            <>
+                                                <FiLoader className="animate-spin" size={16} /> Sending Email...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <FiSend size={15} /> Confirm Booking Request
+                                            </>
+                                        )}
                                     </button>
                                 </form>
                             </>
                         ) : (
-                            <div style={{ textAlign: 'center', padding: '30px 10px' }}>
-                                <motion.div
-                                    initial={{ scale: 0 }}
-                                    animate={{ scale: 1 }}
-                                    transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-                                    style={{
-                                        width: '70px',
-                                        height: '70px',
-                                        borderRadius: '50%',
-                                        background: 'rgba(212, 166, 79, 0.15)',
-                                        color: 'var(--gold)',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        margin: '0 auto 20px',
-                                    }}
-                                >
-                                    <FiCheckCircle size={38} />
-                                </motion.div>
-                                <h3 style={{ fontSize: '1.6rem', color: '#fff', fontWeight: 800, marginBottom: '10px' }}>
-                                    Audit Call Requested!
+                            <div style={{ padding: '30px 10px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '14px' }}>
+                                <FiCheckCircle size={48} color="#3b82f6" />
+                                <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#ffffff', margin: 0 }}>
+                                    Email Sent Successfully!
                                 </h3>
-                                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.95rem', lineHeight: 1.6, maxWidth: '420px', margin: '0 auto 24px' }}>
-                                    Thank you, <strong style={{ color: '#fff' }}>{formData.name}</strong>. Our senior AI systems architect will review your workflow requirements and email calendar invite options to <strong style={{ color: 'var(--gold)' }}>{formData.email}</strong> within 2 business hours.
+                                <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.88rem', margin: 0, lineHeight: 1.5 }}>
+                                    Thank you {formData.name}. Your details have been sent directly to <strong>sapraforce@gmail.com</strong>. We will get back to you within 2 hours.
                                 </p>
                                 <button
                                     onClick={handleReset}
                                     style={{
-                                        padding: '12px 28px',
-                                        background: 'rgba(255,255,255,0.1)',
-                                        border: '1px solid rgba(255,255,255,0.2)',
-                                        borderRadius: '10px',
-                                        color: '#fff',
+                                        marginTop: '10px',
+                                        padding: '9px 22px',
+                                        borderRadius: '8px',
+                                        background: '#1e40af',
+                                        color: '#ffffff',
+                                        fontSize: '0.85rem',
                                         fontWeight: 600,
+                                        border: 'none',
                                         cursor: 'pointer',
+                                        fontFamily: "'Manrope', sans-serif",
                                     }}
                                 >
                                     Close Window

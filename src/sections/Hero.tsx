@@ -53,7 +53,7 @@ const slides = [
     },
 ];
 
-const partners = companyData.partners;
+
 
 interface HeroProps {
     onBookCall?: () => void;
@@ -352,22 +352,77 @@ export const Hero: React.FC<HeroProps> = ({ onBookCall }) => {
                 <div style={{ position: 'relative', overflow: 'hidden' }}>
                     <motion.div
                         animate={{ x: ['0%', '-50%'] }}
-                        transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-                        style={{ display: 'flex', gap: '16px', width: 'max-content' }}
+                        transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+                        style={{ display: 'flex', gap: '32px', alignItems: 'center', width: 'max-content' }}
                     >
-                        {[...partners, ...partners].map((p, idx) => (
-                            <div key={idx} style={{
-                                display: 'flex', alignItems: 'center', gap: '8px',
-                                padding: '8px 18px', borderRadius: '10px',
-                                background: 'rgba(255,255,255,0.03)',
-                                border: '1px solid rgba(255,255,255,0.06)',
-                                whiteSpace: 'nowrap',
-                            }}>
-                                <span style={{ fontSize: '1rem' }}>{p.symbol}</span>
-                                <span style={{ fontWeight: 700, fontSize: '0.88rem', color: '#fff' }}>{p.name}</span>
-                                <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', paddingLeft: '8px', borderLeft: '1px solid rgba(255,255,255,0.1)' }}>{p.category}</span>
-                            </div>
-                        ))}
+                        {[
+                            // 1. Mazen
+                            <div key="mazen-1" style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(14, 14, 28, 0.75)', border: '1px solid rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(12px)', padding: '8px 20px', borderRadius: '8px', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2.2"><polygon points="12 2 2 7 2 17 12 22 22 17 22 7 12 2"/><path d="M7 17v-6h10v6"/><path d="M5 11h14"/></svg>
+                                <span style={{ fontSize: '0.85rem', fontWeight: 900, color: '#ffffff', letterSpacing: '0.12em', fontFamily: 'sans-serif' }}>MAZEN</span>
+                            </div>,
+                            // 2. Kachyng
+                            <div key="kachyng-1" style={{ background: 'rgba(14, 14, 28, 0.75)', border: '1px solid rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(12px)', padding: '8px 22px', borderRadius: '8px', display: 'flex', alignItems: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
+                                <span style={{ fontSize: '1.15rem', fontWeight: 700, color: '#86efac', fontFamily: 'sans-serif', letterSpacing: '-0.02em' }}>kachyng</span>
+                            </div>,
+                            // 3. RE
+                            <div key="re-1" style={{ background: 'rgba(14, 14, 28, 0.75)', border: '1px solid rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(12px)', padding: '8px 20px', borderRadius: '8px', display: 'flex', alignItems: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
+                                <div style={{ background: '#f97316', padding: '4px 10px', borderRadius: '3px', color: '#ffffff', fontWeight: 900, fontSize: '0.95rem', letterSpacing: '0.05em' }}>RE</div>
+                            </div>,
+                            // 4. Nod
+                            <div key="nod-1" style={{ background: 'rgba(14, 14, 28, 0.75)', border: '1px solid rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(12px)', padding: '8px 22px', borderRadius: '8px', display: 'flex', alignItems: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
+                                <div style={{ background: '#84cc16', padding: '4px 14px', borderRadius: '16px 16px 16px 2px', color: '#0f172a', fontWeight: 900, fontSize: '1rem', fontFamily: 'sans-serif' }}>nod</div>
+                            </div>,
+                            // 5. Viaanix
+                            <div key="viaanix-1" style={{ background: 'rgba(14, 14, 28, 0.75)', border: '1px solid rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(12px)', padding: '8px 22px', borderRadius: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
+                                <span style={{ fontSize: '1rem', fontWeight: 900, color: '#38bdf8', fontStyle: 'italic', letterSpacing: '-0.03em', lineHeight: 1 }}>V3</span>
+                                <span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#38bdf8', letterSpacing: '0.1em' }}>VIAANIX</span>
+                            </div>,
+                            // 6. DXN Edge
+                            <div key="dxn-1" style={{ background: 'rgba(14, 14, 28, 0.75)', border: '1px solid rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(12px)', padding: '8px 20px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="#38bdf8"><path d="M21 16.5C21 16.88 20.79 17.21 20.47 17.38L12.57 21.82C12.41 21.91 12.21 21.97 12 21.97C11.79 21.97 11.59 21.91 11.43 21.82L3.53 17.38C3.21 17.21 3 16.88 3 16.5V7.5C3 7.12 3.21 6.79 3.53 6.62L11.43 2.18C11.59 2.09 11.79 2.03 12 2.03C12.21 2.03 12.41 2.09 12.57 2.18L20.47 6.62C20.79 6.79 21 7.12 21 7.5V16.5Z"/></svg>
+                                <span style={{ fontSize: '0.95rem', fontWeight: 900, color: '#ffffff' }}>DXN <span style={{ fontSize: '0.5rem', color: '#38bdf8', display: 'block', fontWeight: 800, letterSpacing: '0.06em' }}>GIVING YOU THE EDGE</span></span>
+                            </div>,
+                            // 7. AirTrack MDM
+                            <div key="airtrack-1" style={{ background: 'rgba(14, 14, 28, 0.75)', border: '1px solid rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(12px)', padding: '8px 22px', borderRadius: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
+                                <span style={{ fontSize: '0.95rem', fontWeight: 700, color: '#60a5fa' }}>♒ AirTrack<sup style={{ fontSize: '0.5rem' }}>MDM</sup></span>
+                            </div>,
+                            // 8. AMD Telecom
+                            <div key="amd-1" style={{ background: 'rgba(14, 14, 28, 0.75)', border: '1px solid rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(12px)', padding: '8px 22px', borderRadius: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
+                                <span style={{ fontSize: '1rem', fontWeight: 900, color: '#38bdf8', letterSpacing: '0.05em', lineHeight: 1 }}>A<span style={{ color: '#ef4444' }}>•</span>MD</span>
+                                <span style={{ fontSize: '0.5rem', fontWeight: 700, color: 'rgba(255,255,255,0.6)', letterSpacing: '0.2em' }}>TELECOM</span>
+                            </div>,
+
+                            // DUPLICATE FOR INFINITE LOOP:
+                            <div key="mazen-2" style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(14, 14, 28, 0.75)', border: '1px solid rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(12px)', padding: '8px 20px', borderRadius: '8px', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2.2"><polygon points="12 2 2 7 2 17 12 22 22 17 22 7 12 2"/><path d="M7 17v-6h10v6"/><path d="M5 11h14"/></svg>
+                                <span style={{ fontSize: '0.85rem', fontWeight: 900, color: '#ffffff', letterSpacing: '0.12em', fontFamily: 'sans-serif' }}>MAZEN</span>
+                            </div>,
+                            <div key="kachyng-2" style={{ background: 'rgba(14, 14, 28, 0.75)', border: '1px solid rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(12px)', padding: '8px 22px', borderRadius: '8px', display: 'flex', alignItems: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
+                                <span style={{ fontSize: '1.15rem', fontWeight: 700, color: '#86efac', fontFamily: 'sans-serif', letterSpacing: '-0.02em' }}>kachyng</span>
+                            </div>,
+                            <div key="re-2" style={{ background: 'rgba(14, 14, 28, 0.75)', border: '1px solid rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(12px)', padding: '8px 20px', borderRadius: '8px', display: 'flex', alignItems: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
+                                <div style={{ background: '#f97316', padding: '4px 10px', borderRadius: '3px', color: '#ffffff', fontWeight: 900, fontSize: '0.95rem', letterSpacing: '0.05em' }}>RE</div>
+                            </div>,
+                            <div key="nod-2" style={{ background: 'rgba(14, 14, 28, 0.75)', border: '1px solid rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(12px)', padding: '8px 22px', borderRadius: '8px', display: 'flex', alignItems: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
+                                <div style={{ background: '#84cc16', padding: '4px 14px', borderRadius: '16px 16px 16px 2px', color: '#0f172a', fontWeight: 900, fontSize: '1rem', fontFamily: 'sans-serif' }}>nod</div>
+                            </div>,
+                            <div key="viaanix-2" style={{ background: 'rgba(14, 14, 28, 0.75)', border: '1px solid rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(12px)', padding: '8px 22px', borderRadius: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
+                                <span style={{ fontSize: '1rem', fontWeight: 900, color: '#38bdf8', fontStyle: 'italic', letterSpacing: '-0.03em', lineHeight: 1 }}>V3</span>
+                                <span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#38bdf8', letterSpacing: '0.1em' }}>VIAANIX</span>
+                            </div>,
+                            <div key="dxn-2" style={{ background: 'rgba(14, 14, 28, 0.75)', border: '1px solid rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(12px)', padding: '8px 20px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="#38bdf8"><path d="M21 16.5C21 16.88 20.79 17.21 20.47 17.38L12.57 21.82C12.41 21.91 12.21 21.97 12 21.97C11.79 21.97 11.59 21.91 11.43 21.82L3.53 17.38C3.21 17.21 3 16.88 3 16.5V7.5C3 7.12 3.21 6.79 3.53 6.62L11.43 2.18C11.59 2.09 11.79 2.03 12 2.03C12.21 2.03 12.41 2.09 12.57 2.18L20.47 6.62C20.79 6.79 21 7.12 21 7.5V16.5Z"/></svg>
+                                <span style={{ fontSize: '0.95rem', fontWeight: 900, color: '#ffffff' }}>DXN <span style={{ fontSize: '0.5rem', color: '#38bdf8', display: 'block', fontWeight: 800, letterSpacing: '0.06em' }}>GIVING YOU THE EDGE</span></span>
+                            </div>,
+                            <div key="airtrack-2" style={{ background: 'rgba(14, 14, 28, 0.75)', border: '1px solid rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(12px)', padding: '8px 22px', borderRadius: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
+                                <span style={{ fontSize: '0.95rem', fontWeight: 700, color: '#60a5fa' }}>♒ AirTrack<sup style={{ fontSize: '0.5rem' }}>MDM</sup></span>
+                            </div>,
+                            <div key="amd-2" style={{ background: 'rgba(14, 14, 28, 0.75)', border: '1px solid rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(12px)', padding: '8px 22px', borderRadius: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
+                                <span style={{ fontSize: '1rem', fontWeight: 900, color: '#38bdf8', letterSpacing: '0.05em', lineHeight: 1 }}>A<span style={{ color: '#ef4444' }}>•</span>MD</span>
+                                <span style={{ fontSize: '0.5rem', fontWeight: 700, color: 'rgba(255,255,255,0.6)', letterSpacing: '0.2em' }}>TELECOM</span>
+                            </div>,
+                        ]}
                     </motion.div>
                 </div>
             </div>

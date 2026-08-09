@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiSend, FiExternalLink, FiGithub } from 'react-icons/fi';
 import { generateChatResponse } from '../../utils/gemini';
-import { personal } from '../../data/personal';
 
 interface SkillCategory { name: string; icon: string; items: string[]; }
 interface ProjectItem { title: string; description: string; tech: string[]; github?: string | null; live?: string | null; }
@@ -230,7 +229,7 @@ const ProfilesCard: React.FC<{ data: ProofInfo }> = ({ data }) => (
 // ─── Main Chatbot ─────────────────────────────────────────────────────────────
 export const Chatbot: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
     const [messages, setMessages] = useState<Message[]>([
-        { text: `Hi there! I'm ${personal.name}'s AI assistant. Ask me anything about Sarthak!`, sender: 'bot', timestamp: new Date() }
+        { text: `Hi there! I'm Sapraforce's AI assistant. Ask me anything about our AI services and automation solutions!`, sender: 'bot', timestamp: new Date() }
     ]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -259,12 +258,7 @@ export const Chatbot: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
         setMessages(newMessages);
         setIsLoading(true);
 
-        const history = messages.map(m => ({
-            role: m.sender === 'bot' ? 'model' : 'user',
-            parts: [{ text: m.text }]
-        }));
-
-        const rawResponse = await generateChatResponse(userMsg, history);
+        const rawResponse = await generateChatResponse(userMsg);
         const structured = tryParseStructured(rawResponse);
 
         setMessages(prev => [...prev, {
