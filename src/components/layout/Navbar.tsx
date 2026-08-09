@@ -1,38 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FiHome, FiUser, FiBriefcase, FiCode, FiAward, FiMail } from 'react-icons/fi';
-import { MdOutlineSchool } from 'react-icons/md';
-import { personal } from '../../data/personal';
+import { FiHome, FiCpu, FiLayers, FiGitBranch, FiTrendingUp, FiMail, FiPhoneCall } from 'react-icons/fi';
 
 const navItems = [
     { id: 'hero', label: 'Home', Icon: FiHome },
-    { id: 'about', label: 'About', Icon: FiUser },
-    { id: 'education', label: 'Education', Icon: MdOutlineSchool },
-    { id: 'experience', label: 'Experience', Icon: FiBriefcase },
-    { id: 'projects', label: 'Portfolio', Icon: FiCode },
-    { id: 'achievements', label: 'Achievements', Icon: FiAward },
+    { id: 'solutions', label: 'Solutions', Icon: FiCpu },
+    { id: 'services', label: 'Services', Icon: FiLayers },
+    { id: 'workflow', label: 'Workflow', Icon: FiGitBranch },
+    { id: 'roi', label: 'ROI & Impact', Icon: FiTrendingUp },
     { id: 'contact', label: 'Contact', Icon: FiMail },
 ];
 
 interface NavbarProps {
     activeSection: string;
     onSectionChange: (id: string) => void;
+    onBookCall?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ activeSection, onSectionChange }) => {
+export const Navbar: React.FC<NavbarProps> = ({ activeSection, onSectionChange, onBookCall }) => {
     const [hovered, setHovered] = useState<string | null>(null);
     const [isMobile, setIsMobile] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
-        const check = () => setIsMobile(window.innerWidth < 1024);
-        check();
-        window.addEventListener('resize', check);
-        return () => window.removeEventListener('resize', check);
-    }, []);
+        const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+        const checkScroll = () => setScrolled(window.scrollY > 20);
 
-    const iconSize = isMobile ? 18 : 18;
-    const btnSize = isMobile ? 'clamp(32px, 11vw, 42px)' : '42px';
-    const gap = isMobile ? 'clamp(2px, 1vw, 4px)' : '4px';
+        checkMobile();
+        checkScroll();
+
+        window.addEventListener('resize', checkMobile);
+        window.addEventListener('scroll', checkScroll);
+
+        return () => {
+            window.removeEventListener('resize', checkMobile);
+            window.removeEventListener('scroll', checkScroll);
+        };
+    }, []);
 
     return (
         <motion.header
@@ -41,56 +45,88 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, onSectionChange }
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             style={{
                 position: 'fixed',
-                top: '0',
+                top: 0,
                 left: 0,
                 right: 0,
-                zIndex: 200,
-                padding: isMobile ? '10px 12px' : '16px 24px',
+                zIndex: 900,
+                padding: isMobile ? '10px 12px' : '16px 32px',
+                transition: 'all 0.3s ease',
             }}
         >
             <div
                 style={{
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: isMobile ? 'center' : 'space-between',
+                    justifyContent: 'space-between',
                     width: '100%',
                     maxWidth: '1400px',
                     margin: '0 auto',
-                    padding: isMobile ? '6px 8px' : '8px 12px 8px 24px',
-                    borderRadius: isMobile ? '20px' : '16px',
-                    backgroundColor: 'rgba(10, 10, 15, 0.85)',
-                    backdropFilter: 'blur(12px)',
-                    border: '1px solid rgba(255,255,255,0.06)',
+                    padding: isMobile ? '8px 12px' : '10px 16px 10px 24px',
+                    borderRadius: isMobile ? '16px' : '20px',
+                    backgroundColor: scrolled ? 'rgba(10, 10, 20, 0.92)' : 'rgba(10, 10, 20, 0.75)',
+                    backdropFilter: 'blur(16px)',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    boxShadow: scrolled ? '0 12px 30px rgba(0, 0, 0, 0.6)' : 'none',
                 }}
             >
-                {/* Logo - hidden on mobile */}
-                {!isMobile && (
-                    <button
-                        onClick={() => onSectionChange('hero')}
+                {/* Brand Logo & Name */}
+                <button
+                    onClick={() => onSectionChange('hero')}
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: '4px 0',
+                    }}
+                >
+                    <div
                         style={{
-                            fontSize: '1.4rem',
+                            width: '38px',
+                            height: '38px',
+                            borderRadius: '10px',
+                            background: 'linear-gradient(135deg, var(--gold) 0%, #aa3bff 100%)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: '#0a0a14',
                             fontWeight: 900,
-                            color: 'var(--gold)',
-                            background: 'none',
-                            border: 'none',
-                            cursor: 'pointer',
-                            padding: '8px',
-                            flexShrink: 0,
+                            fontSize: '1.1rem',
+                            boxShadow: '0 0 15px rgba(212, 166, 79, 0.4)',
                         }}
                     >
-                        {personal.initials}
-                    </button>
-                )}
+                        ⚡
+                    </div>
+                    <div style={{ textAlign: 'left' }}>
+                        <span
+                            style={{
+                                fontSize: '1.25rem',
+                                fontWeight: 800,
+                                color: '#ffffff',
+                                letterSpacing: '-0.02em',
+                                display: 'block',
+                                lineHeight: 1.1,
+                            }}
+                        >
+                            SapraForce<span style={{ color: 'var(--gold)' }}>.AI</span>
+                        </span>
+                        {!isMobile && (
+                            <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                                Real-World AI Automation
+                            </span>
+                        )}
+                    </div>
+                </button>
 
-                {/* Nav Items */}
+                {/* Nav Items Links */}
                 <nav
                     style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap,
+                        gap: isMobile ? '2px' : '6px',
                         flexWrap: 'nowrap',
-                        justifyContent: 'center',
-                        width: isMobile ? '100%' : 'auto',
                     }}
                 >
                     {navItems.map(({ id, label, Icon }) => {
@@ -105,41 +141,60 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, onSectionChange }
                                 onMouseLeave={() => setHovered(null)}
                                 title={label}
                                 style={{
-                                    width: btnSize,
-                                    height: btnSize,
-                                    flexShrink: 0,
                                     display: 'flex',
                                     alignItems: 'center',
-                                    justifyContent: 'center',
-                                    borderRadius: '8px',
+                                    gap: '6px',
+                                    padding: isMobile ? '8px clamp(6px, 2vw, 10px)' : '8px 14px',
+                                    borderRadius: '10px',
                                     background: isActive
-                                        ? 'rgba(255, 255, 255, 0.07)'
+                                        ? 'rgba(212, 166, 79, 0.12)'
                                         : isHovered
-                                            ? 'rgba(255, 255, 255, 0.04)'
+                                            ? 'rgba(255, 255, 255, 0.05)'
                                             : 'transparent',
-                                    color: (isActive || isHovered) ? 'var(--gold)' : 'rgba(255,255,255,0.75)',
+                                    color: isActive
+                                        ? 'var(--gold)'
+                                        : isHovered
+                                            ? '#ffffff'
+                                            : 'rgba(255,255,255,0.7)',
                                     cursor: 'pointer',
                                     transition: 'all 0.2s ease',
-                                    border: isActive ? '1px solid rgba(255,255,255,0.1)' : '1px solid transparent',
-                                    position: 'relative',
+                                    border: isActive
+                                        ? '1px solid rgba(212, 166, 79, 0.3)'
+                                        : '1px solid transparent',
+                                    fontSize: '0.85rem',
+                                    fontWeight: isActive ? 700 : 500,
                                 }}
                             >
-                                <Icon size={iconSize} />
-                                {isActive && (
-                                    <div style={{
-                                        position: 'absolute',
-                                        bottom: '4px',
-                                        width: '4px',
-                                        height: '4px',
-                                        borderRadius: '50%',
-                                        background: 'var(--gold)',
-                                        boxShadow: '0 0 8px var(--gold)',
-                                    }} />
-                                )}
+                                <Icon size={16} />
+                                {!isMobile && <span>{label}</span>}
                             </button>
                         );
                     })}
                 </nav>
+
+                {/* Thinkitive-Style Right Header CTA: "Book a 30 Min Call" */}
+                {!isMobile && (
+                    <button
+                        onClick={onBookCall}
+                        style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            padding: '10px 20px',
+                            borderRadius: '10px',
+                            background: 'linear-gradient(135deg, var(--gold) 0%, #b88a38 100%)',
+                            color: '#0a0a14',
+                            fontWeight: 700,
+                            fontSize: '0.88rem',
+                            border: 'none',
+                            cursor: 'pointer',
+                            boxShadow: '0 4px 15px rgba(212, 166, 79, 0.3)',
+                            transition: 'all 0.25s ease',
+                        }}
+                    >
+                        <FiPhoneCall size={15} /> Book a 30 Min Call
+                    </button>
+                )}
             </div>
         </motion.header>
     );
