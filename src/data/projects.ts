@@ -192,6 +192,26 @@ export const projectsData: Project[] = [
 
     // ─── ORGANIZATIONAL PROJECTS ──────────────────────────────────────
     {
+        id: 'org-5',
+        category: 'organizational',
+        title: 'Frontend Development & Client Support Ticket Resolution',
+        tags: ['Frontend Development', 'Client Support', 'Bug Resolution'],
+        company: 'Thinkitive Technologies',
+        year: 'July 2026 – Present',
+        role: 'Software Developer',
+        description: 'Worked on building frontend web applications using Meteor.js and React.js while resolving client support tickets at Thinkitive Technologies.',
+        about: 'Contributed to frontend web application development by crafting user interfaces with Meteor.js and React.js, and diagnosing/resolving client-reported bugs and tickets to maintain high application performance.',
+        contribution: [
+            'Developed user interface components using Meteor.js, React.js, HTML5, and CSS3',
+            'Diagnosed and resolved client support tickets, troubleshooting complex web app issues',
+            'Implemented design improvements and frontend responsiveness across various viewports',
+            'Participated in code reviews and collaborated with dev teams to streamline feature delivery'
+        ],
+        impact: 'Improved application stability and user satisfaction through prompt client ticket resolution and UI enhancements.',
+        tech: ['Meteor.js', 'React.js', 'JavaScript', 'HTML5', 'CSS3', 'REST APIs', 'Git'],
+        isPrivate: true,
+    },
+    {
         id: 'org-1',
         category: 'organizational',
         title: 'CRM Process Automation Platform',

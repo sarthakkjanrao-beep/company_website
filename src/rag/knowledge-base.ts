@@ -76,9 +76,20 @@ GitHub: github.com/Sarthakjanrao07`,
 
     // ── WORK EXPERIENCE ───────────────────────────────────────────────────────
     {
+        id: 'exp-thinkitive',
+        tags: ['experience', 'trainee', 'work', 'job', 'thinkitive', 'thinkitive technologies', 'company', 'role', 'frontend', 'tickets', 'client', 'meteor', 'meteojs'],
+        text: `Work Experience 1 — Software Developer Trainee @ Thinkitive Technologies (July 2026 – Present, Trainee, Pune)
+Summary: Worked on frontend web development and client ticket resolution using Meteor.js and React.js, building responsive UI components and resolving client issues.
+Highlights:
+• Developed and maintained responsive frontend web interfaces using Meteor.js, React.js, HTML, and CSS
+• Resolved 30+ client support tickets and software bugs to ensure smooth application operations
+• Collaborated with development teams to implement client-requested feature enhancements
+Tech Stack: Meteor.js, React.js, JavaScript, HTML5, CSS3, REST APIs, Git, Bug Resolution`,
+    },
+    {
         id: 'exp-vara-tech',
         tags: ['experience', 'internship', 'work', 'job', 'vara', 'vara tech', 'company', 'role', 'n8n', 'crm', 'saas', 'automation', 'supabase'],
-        text: `Work Experience 1 — Software Engineering Intern @ Vara Tech (Nov 2025 – May 2026, Internship, Pune)
+        text: `Work Experience 2 — Software Engineering Intern @ Vara Tech (Nov 2025 – May 2026, Internship, Pune)
 Summary: Built and deployed a full-stack SaaS application with n8n automation, processing 50,000+ CRM records and reducing manual data handling by 70%.
 Highlights:
 • Built full-stack SaaS using Lovable, Supabase, and n8n
@@ -90,7 +101,7 @@ Tech Stack: React, TypeScript, Vite, Tailwind CSS, Supabase, PostgreSQL, n8n, RE
     {
         id: 'exp-hanumatrix',
         tags: ['experience', 'internship', 'work', 'job', 'hanumatrix', 'company', 'role', 'frontend', 'react', 'nextjs', 'performance'],
-        text: `Work Experience 2 — Frontend Developer Intern @ Hanumatrix (July 2025 – Dec 2025, Internship, Remote-Pune)
+        text: `Work Experience 3 — Frontend Developer Intern @ Hanumatrix (July 2025 – Dec 2025, Internship, Remote-Pune)
 Summary: Developed responsive web applications using React.js and Next.js, improving frontend performance by 30%.
 Highlights:
 • Built 10+ reusable UI components using React.js, Next.js, and Tailwind CSS

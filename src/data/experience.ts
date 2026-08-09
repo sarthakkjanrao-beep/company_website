@@ -14,6 +14,23 @@ export interface Experience {
 
 export const experienceData: Experience[] = [
     {
+        id: 'exp-3',
+        role: 'Software Developer',
+        company: 'Thinkitive Technologies',
+        link: 'https://www.thinkitive.com/',
+        type: 'Trainee',
+        duration: 'July 2026 – Present',
+        location: 'Pune, Maharashtra',
+        summary:
+            'Worked on frontend web development and client ticket resolution using Meteor.js and React.js, building responsive UI components and delivering timely bug fixes for client web applications.',
+        highlights: [
+            'Developed and maintained responsive frontend web interfaces using Meteor.js, React.js, HTML, and CSS',
+            'Resolved client support tickets and software bugs, ensuring smooth application operations and high client satisfaction',
+            'Collaborated with cross-functional development teams to implement client-requested feature enhancements and optimize frontend workflows',
+        ],
+        tech: ['Meteor.js', 'React.js', 'JavaScript', 'HTML5', 'CSS3', 'REST APIs', 'Git', 'Bug Resolution'],
+    },
+    {
         id: 'exp-1',
         role: 'Software Engineering Intern',
         company: 'Vara Tech',

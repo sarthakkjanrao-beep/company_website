@@ -37,6 +37,17 @@ const EXPERIENCE_JSON = JSON.stringify({
     data: {
         jobs: [
             {
+                role: 'Software Developer Trainee', company: 'Thinkitive Technologies',
+                duration: 'July 2026 – Present', type: 'Trainee',
+                summary: 'Worked on frontend web development and client ticket resolution using Meteor.js and React.js, building responsive UI components and resolving client issues.',
+                highlights: [
+                    'Developed and maintained responsive frontend web interfaces using Meteor.js, React.js, HTML, and CSS',
+                    'Resolved 30+ client support tickets and software bugs, ensuring smooth application performance',
+                    'Collaborated with development teams to implement client-requested feature enhancements',
+                ],
+                tech: ['Meteor.js', 'React.js', 'JavaScript', 'HTML5', 'CSS3', 'REST APIs', 'Git', 'Bug Resolution'],
+            },
+            {
                 role: 'Software Engineering Intern', company: 'Vara Tech',
                 duration: 'Nov 2025 – May 2026', type: 'Internship',
                 summary: 'Built a full-stack SaaS app with n8n automation, processing 50,000+ CRM records and reducing manual effort by 70%.',
@@ -57,7 +68,7 @@ const EXPERIENCE_JSON = JSON.stringify({
                     'Integrated 10+ REST API endpoints for dynamic data rendering',
                     'Reduced page load time by 30% via optimization and lazy loading',
                     'Resolved 40+ bugs in an Agile environment',
-                ],
+                    ],
                 tech: ['React.js', 'Next.js', 'JavaScript', 'TypeScript', 'Tailwind CSS', 'REST APIs'],
             },
         ],
